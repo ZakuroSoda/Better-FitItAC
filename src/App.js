@@ -1,23 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState, useEffect} from 'react';
+
+import Logo from './components/Logo';
+import Login from './components/Login';
+import ReportsList from './components/ReportsList';
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
 function App() {
+
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const token = getCookie('token');
+    if (token) {
+      fetch(`http://localhost:2000/getusername?token=${token}`)
+        .then(res => res.text())
+        .then(username => setUser(username));
+    }
+  }, [user]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <div className="container d-flex flex-column justify-content-center align-items-center p-2 pt-5">
+        <Logo />
+        <Login user={user} setUser={setUser}/>
+        <ReportsList user={user}/>
+      </div>
     </div>
   );
 }
