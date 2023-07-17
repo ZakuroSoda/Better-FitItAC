@@ -22,9 +22,9 @@ async function login (schoolID) {
 
 async function authenticate (token) {
     const db = await openDb('./server/database.db');
-    const user = await db.get('SELECT * FROM users WHERE token = ?', token);
+    const user = await db.get('SELECT schoolID FROM users WHERE token = ?', token);
     if (user) {
-        return user;
+        return user.schoolID;
     }
     return null;
 }

@@ -9,7 +9,7 @@ function Logo(){
           style={{ maxWidth: '50%', height: 'auto' }}
           alt="logo"
         />
-        <h1>
+        <h1 className='mb-3'>
           FixItAC++
         </h1>
     </>

@@ -3,6 +3,7 @@ import React, {useState, useEffect} from 'react';
 import Logo from './components/Logo';
 import Login from './components/Login';
 import ReportsList from './components/ReportsList';
+import Error from './components/Error';
 
 function getCookie(name) {
   const value = `; ${document.cookie}`;
@@ -13,6 +14,7 @@ function getCookie(name) {
 function App() {
 
   const [user, setUser] = useState(null);
+  const [showError, setShowError] = useState(false);
 
   useEffect(() => {
     const token = getCookie('token');
@@ -22,7 +24,9 @@ function App() {
           if (res.status === 401) {
             throw new Error('Invalid Token: Possibly Altered?');
           }
-          let username = res.text();
+          return res.text();
+        })
+        .then(username => {
           setUser(username);
         });
     }
@@ -32,7 +36,8 @@ function App() {
     <div className='App'>
       <div className="container d-flex flex-column justify-content-center align-items-center p-2 pt-5">
         <Logo />
-        <Login user={user} setUser={setUser}/>
+        <Error error={showError}/>
+        <Login user={user} setUser={setUser} setShowError={setShowError}/>
         <ReportsList user={user}/>
       </div>
     </div>
