@@ -18,8 +18,13 @@ function App() {
     const token = getCookie('token');
     if (token) {
       fetch(`http://localhost:2000/getusername?token=${token}`)
-        .then(res => res.text())
-        .then(username => setUser(username));
+        .then(res => {
+          if (res.status === 401) {
+            throw new Error('Invalid Token: Possibly Altered?');
+          }
+          let username = res.text();
+          setUser(username);
+        });
     }
   }, [user]);
 

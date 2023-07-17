@@ -1,34 +1,49 @@
 const express = require('express');
-import { v4 as uuidv4 } from 'uuid';
+
+const { login, authenticate } = require('./server/databaseFunctions.js');
 
 const path = require('path');
 const app = express();
 const port = 2000;
-
-app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
   res.send('API for FixItAC++');
 });
 
 app.get('/getusername', (req, res) => {
-  const token = req.query.token;
-  // checks db for token, returns username if session is valid
   res.set({
     'Content-Type': 'text/plain',
     'Access-Control-Allow-Origin': '*'
   });
-  res.send(`${token}: john.tan`);
+
+  const token = req.query.token;
+
+  authenticate(token).then((user) => {
+    if (user) {
+      res.send(user);
+    } else {
+      res.sendStatus(401);
+    }
+  });
+
 });
 
 app.get('/newtoken', (req, res) => {
-  const username = req.query.username;
-  // checks db for username, returns new token if user exists
   res.set({
     'Content-Type': 'text/plain',
     'Access-Control-Allow-Origin': '*'
   });
-  res.send(`${username}: 1234567890`);
+
+  const username = req.query.username;
+
+  login(username).then((token) => {
+    if (token) {
+      res.send(token);
+    } else {
+      res.sendStatus(401);
+    }
+  });  
+  
 });
 
 app.listen(port, () => {

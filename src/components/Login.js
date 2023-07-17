@@ -7,10 +7,16 @@ function Login(props){
     const handleSubmit = (event) => {
       console.log('here');
       event.preventDefault();
-      //send request to backend api to check if schoolID is valid, return token
+
       fetch(`http://localhost:2000/newtoken?username=${schoolID}`)
-        .then(res => res.text())
-        .then(token => {document.cookie = `token=${token}`; setUser(token)});
+        .then(res => {
+          if (res.status === 401) {
+            throw new Error('Invalid school ID');
+          }
+          let token = res.text();
+          document.cookie = `token=${token}`;
+          setUser(schoolID);
+        });
     }
 
     if (!user) {
