@@ -22,7 +22,8 @@ function App() {
       fetch(`http://localhost:2000/getusername?token=${token}`)
         .then(res => {
           if (res.status === 401) {
-            throw new Error('Invalid Token: Possibly Altered?');
+            console.log("Invalid token");
+            return;
           }
           return res.text();
         })

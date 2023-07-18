@@ -11,11 +11,14 @@ function Login(props){
         .then(res => {
           if (res.status === 401) {
             setShowError(true);
-            return "";
+            return null;
           }
           return res.text();
         })
         .then(token => {
+          if (!token) return;
+          
+          setShowError(false);
           document.cookie = `token=${token}`;
           setUser(schoolID);
         })
