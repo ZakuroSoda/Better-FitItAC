@@ -15,6 +15,7 @@ function App() {
 
   const [user, setUser] = useState(null);
   const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const token = getCookie('token');
@@ -22,8 +23,9 @@ function App() {
       fetch(`http://localhost:2000/getusername?token=${token}`)
         .then(res => {
           if (res.status === 401) {
-            console.log("Invalid token");
-            return;
+            setErrorMessage('Session token error');
+            setShowError(true);
+            return null;
           }
           return res.text();
         })
@@ -37,8 +39,8 @@ function App() {
     <div className='App'>
       <div className="container d-flex flex-column justify-content-center align-items-center p-2 pt-5">
         <Logo />
-        <Error error={showError}/>
-        <Login user={user} setUser={setUser} setShowError={setShowError}/>
+        <Error showError={showError} errorMessage={errorMessage}/>
+        <Login user={user} setUser={setUser} setShowError={setShowError} setErrorMessage={setErrorMessage}/>
         <ReportsList user={user}/>
       </div>
     </div>

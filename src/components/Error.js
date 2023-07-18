@@ -1,12 +1,12 @@
 import React from 'react';
 
 function Error(props){
-    const showError = props.error;
+    const { showError, errorMessage} = props;
     if (!showError) return null;
     return (
         <>
             <p style={{color: "red"}}>
-                Invalid School ID
+                {errorMessage}
             </p>
         </>
     );

@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 
 function Login(props){
-    const {user, setUser, setShowError} = props;
+    const {user, setUser, setShowError, setErrorMessage} = props;
     const [schoolID, setSchoolID] = useState("");
 
     const handleSubmit = (event) => {
@@ -10,6 +10,7 @@ function Login(props){
       fetch(`http://localhost:2000/newtoken?username=${schoolID}`)
         .then(res => {
           if (res.status === 401) {
+            setErrorMessage("Invalid School ID");
             setShowError(true);
             return null;
           }
