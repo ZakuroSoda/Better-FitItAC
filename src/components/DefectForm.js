@@ -10,7 +10,6 @@ function DefectForm(props) {
     'description': ''
   });
   const [selectedFile, setSelectedFile] = useState(null);
-  console.log(defectReport);
 
   const handleSubmit = (event) => {
     event.preventDefault();
