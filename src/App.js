@@ -16,7 +16,6 @@ function getCookie(name) {
 function App() {
 
   const [user, setUser] = useState(null);
-  const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [page, setPage] = useState('login');
 
@@ -27,7 +26,6 @@ function App() {
         .then(res => {
           if (res.status === 401) {
             setErrorMessage('Session token error');
-            setShowError(true);
             return null;
           }
           return res.text();
@@ -43,8 +41,8 @@ function App() {
     <div className='App'>
       <div className="container d-flex flex-column justify-content-center align-items-center p-2 pt-5">
         <Logo />
-        <Error showError={showError} errorMessage={errorMessage}/>
-        <Login page={page} setPage={setPage} setUser={setUser} setShowError={setShowError} setErrorMessage={setErrorMessage}/>
+        <Error errorMessage={errorMessage}/>
+        <Login page={page} setPage={setPage} setUser={setUser} setErrorMessage={setErrorMessage}/>
         <Menu page={page} setPage={setPage}/>
         <DefectForm user={user} page={page} setPage={setPage}/>
         <SuggestionForm user={user} page={page} setPage={setPage}/>
