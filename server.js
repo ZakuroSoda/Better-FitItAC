@@ -66,6 +66,12 @@ app.post('/newdefectphoto', (req, res) => {
   });
 });
 
+app.post('/newsuggestionreport', (req, res) => {
+  const suggestionReport = req.body;
+  console.log(suggestionReport);
+  res.send('123');
+});
+
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

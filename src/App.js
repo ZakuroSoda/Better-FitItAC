@@ -2,9 +2,10 @@ import React, {useState, useEffect} from 'react';
 
 import Logo from './components/Logo';
 import Login from './components/Login';
-// import ReportsList from './components/ReportsList';
 import Error from './components/Error';
 import DefectForm from './components/DefectForm';
+import SuggestionForm from './components/SuggestionForm';
+import Menu from './components/Menu';
 
 function getCookie(name) {
   const value = `; ${document.cookie}`;
@@ -17,6 +18,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [showError, setShowError] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
+  const [page, setPage] = useState('login');
 
   useEffect(() => {
     const token = getCookie('token');
@@ -32,6 +34,7 @@ function App() {
         })
         .then(username => {
           setUser(username);
+          setPage('menu');
         });
     }
   }, [user]);
@@ -41,9 +44,10 @@ function App() {
       <div className="container d-flex flex-column justify-content-center align-items-center p-2 pt-5">
         <Logo />
         <Error showError={showError} errorMessage={errorMessage}/>
-        <Login user={user} setUser={setUser} setShowError={setShowError} setErrorMessage={setErrorMessage}/>
-        {/* <ReportsList user={user}/> */}
-        <DefectForm user={user}/>
+        <Login page={page} setPage={setPage} setUser={setUser} setShowError={setShowError} setErrorMessage={setErrorMessage}/>
+        <Menu page={page} setPage={setPage}/>
+        <DefectForm user={user} page={page} setPage={setPage}/>
+        <SuggestionForm user={user} page={page} setPage={setPage}/>
       </div>
     </div>
   );
