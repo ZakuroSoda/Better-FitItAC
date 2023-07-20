@@ -1,15 +1,16 @@
 const express = require('express');
 const cors = require('cors');
-const bodyParser = require('body-parser');
 const fs = require('fs');
+const bodyParser = require('body-parser');
+const fileUpload = require('express-fileupload');
+const path = require('path');
 
 const { login, authenticate } = require('./server/databaseFunctions.js');
 
-const path = require('path');
 const app = express();
 const port = 2000;
 
-app.use(cors());
+app.use(cors(), bodyParser.json(), fileUpload());
 
 app.get('/', (req, res) => {
   res.send('API for FixItAC++');
@@ -39,7 +40,7 @@ app.get('/newtoken', (req, res) => {
   
 });
 
-app.post('/newdefectreport', bodyParser.json(), (req, res) => {
+app.post('/newdefectreport', (req, res) => {
   const defectReport = req.body;
   console.log(defectReport);
   res.send('123');
@@ -47,7 +48,22 @@ app.post('/newdefectreport', bodyParser.json(), (req, res) => {
 
 
 app.post('/newdefectphoto', (req, res) => {
-  //gay
+  const file = req.files?.file;
+  const id = req.body.id;
+
+  const uploadDir = path.join(__dirname, 'uploads');
+  if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir);
+  }
+  const uniqueFileName = `${id}_${Date.now()}_${file.name}`;
+  const filePath = path.join(uploadDir, uniqueFileName);
+  file.mv(filePath, (err) => {
+    if (err) {
+      console.error(`Error saving the file ${uniqueFileName}:`, err);
+      return res.status(500);
+    }
+    return res.status(200);
+  });
 });
 
 app.listen(port, () => {

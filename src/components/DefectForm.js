@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function DefectForm(props) {
   const user = props.user;
@@ -13,11 +15,6 @@ function DefectForm(props) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    setDefectReport({
-      ...defectReport,
-      'school-id': user
-    });
-    console.log(selectedFile);
 
     if (defectReport.title === '' || defectReport.location === '' || defectReport.description === '') return;
 
@@ -35,19 +32,29 @@ function DefectForm(props) {
       const formData = new FormData();
       formData.append('file', selectedFile);
       formData.append('id', id);
-
+      // DO NOT DEFINE CONTENT-TYPE HEADER
       fetch('http://localhost:2000/newdefectphoto', {
         method: 'POST',
-        headers: {
-          "Content-Type": "multipart/form-data"
-        },
         body: formData
       });
-    });
+    })
+    .then(() => {
+      setDefectReport({
+        'school-id': user,
+        'title': '',
+        'category': '1',
+        'location': '',
+        'description': ''
+      });
+      setSelectedFile(null);
+      toast.success('Defect report submitted successfully!', {position: "bottom-right"});
+    })
   }
   if (!user) return null;
   return (
     <>
+      <ToastContainer />
+      
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="title" className="form-label">Title</label>
@@ -59,6 +66,7 @@ function DefectForm(props) {
             onChange={(e) => {
               setDefectReport({
                 ...defectReport,
+                "school-id": user,
                 title: e.target.value
               });
             }}

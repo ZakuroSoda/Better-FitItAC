@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 
 import Logo from './components/Logo';
 import Login from './components/Login';
-import ReportsList from './components/ReportsList';
+// import ReportsList from './components/ReportsList';
 import Error from './components/Error';
 import DefectForm from './components/DefectForm';
 
@@ -42,7 +42,7 @@ function App() {
         <Logo />
         <Error showError={showError} errorMessage={errorMessage}/>
         <Login user={user} setUser={setUser} setShowError={setShowError} setErrorMessage={setErrorMessage}/>
-        <ReportsList user={user}/>
+        {/* <ReportsList user={user}/> */}
         <DefectForm user={user}/>
       </div>
     </div>
