@@ -29,4 +29,47 @@ async function authenticate (token) {
     return null;
 }
 
-module.exports = {login, authenticate};
+/*
+CREATE TABLE defect_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    uid TEXT NOT NULL,
+    date INTEGER NOT NULL,
+    school_id TEXT NOT NULL,
+    resolved_status INTEGER NOT NULL,
+    title TEXT NOT NULL,
+    category TEXT NOT NULL,
+    location TEXT NOT NULL,
+    description TEXT NOT NULL,
+    image_extension TEXT
+)
+*/
+
+async function newdefectreport (defectReport) {
+    const db = await openDb('./server/database.db');
+    const uid = uuidv4().replace(/[\r\n]+/g, '');
+    await db.run(
+        `INSERT INTO 
+            defect_reports
+            (uid, date, school_id, resolved_status, title, category, location, description)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `, 
+        uid,
+        Date.now(),
+        defectReport.schoolID,
+        0,
+        defectReport.title,
+        defectReport.category,
+        defectReport.location,
+        defectReport.description
+    );
+    return uid;
+}
+
+async function newdefectphoto (uid, ext) {
+    const db = await openDb('./server/database.db');
+    await db.run(`UPDATE defect_reports
+    SET image_extension = ? WHERE uid = ?`,
+    ext, uid);
+}
+
+module.exports = {login, authenticate, newdefectreport, newdefectphoto};

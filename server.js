@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const path = require('path');
 
-const { login, authenticate } = require('./server/databaseFunctions.js');
+const { login, authenticate, newdefectreport, newdefectphoto } = require('./server/databaseFunctions.js');
 
 const app = express();
 const port = 2000;
@@ -42,21 +42,34 @@ app.get('/newtoken', (req, res) => {
 
 app.post('/newdefectreport', (req, res) => {
   const defectReport = req.body;
-  console.log(defectReport);
-  res.send('123');
+  const categories = ['Lights', 'Projector/Sound System', 'Air-Con', 'Other Electrical', 'Toilet', 'Building', 'Other']
+  const updatedDefectReport = {
+    ...defectReport,
+    category: categories[defectReport.category-1],
+  }
+  
+  newdefectreport(updatedDefectReport)
+  .then((uid) => {
+    res.send(uid);
+  });
+
 });
 
 
 app.post('/newdefectphoto', (req, res) => {
   const file = req.files?.file;
-  const id = req.body.id;
+  const uid = req.body.id;
 
   const uploadDir = path.join(__dirname, 'uploads');
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
   }
-  const uniqueFileName = `${id}_${Date.now()}_${file.name}`;
+  const ext = path.extname(file.name);
+  const uniqueFileName = `${uid}${ext}`;
   const filePath = path.join(uploadDir, uniqueFileName);
+
+  newdefectphoto(uid, ext);
+
   file.mv(filePath, (err) => {
     if (err) {
       console.error(`Error saving the file ${uniqueFileName}:`, err);

@@ -6,7 +6,7 @@ function DefectForm(props) {
   const {user, page, setPage} = props;
 
   const [defectReport, setDefectReport] = useState({
-    'school-id': user,
+    'schoolID': user,
     'title': '',
     'category': '1',
     'location': '',
@@ -44,7 +44,7 @@ function DefectForm(props) {
     })
     .then(() => {
       setDefectReport({
-        'school-id': user,
+        'schoolID': user,
         'title': '',
         'category': '1',
         'location': '',
@@ -70,7 +70,7 @@ function DefectForm(props) {
               onChange={(e) => {
                 setDefectReport({
                   ...defectReport,
-                  "school-id": user,
+                  "schoolID": user,
                   title: e.target.value
                 });
               }}
