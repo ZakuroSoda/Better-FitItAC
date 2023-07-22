@@ -5,7 +5,12 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const path = require('path');
 
-const { login, authenticate, newdefectreport, newdefectphoto } = require('./server/databaseFunctions.js');
+const { login,
+  authenticate,
+  newdefectreport,
+  newdefectphoto,
+  newsuggestionreport
+} = require('./server/databaseFunctions.js');
 
 const app = express();
 const port = 2000;
@@ -81,8 +86,10 @@ app.post('/newdefectphoto', (req, res) => {
 
 app.post('/newsuggestionreport', (req, res) => {
   const suggestionReport = req.body;
-  console.log(suggestionReport);
-  res.send('123');
+  newsuggestionreport(suggestionReport)
+  .then((uid) => {
+    res.send(uid);
+  });
 });
 
 app.listen(port, () => {

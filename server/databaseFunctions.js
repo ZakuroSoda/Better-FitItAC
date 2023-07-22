@@ -41,7 +41,7 @@ CREATE TABLE defect_reports (
     location TEXT NOT NULL,
     description TEXT NOT NULL,
     image_extension TEXT
-)
+);
 */
 
 async function newdefectreport (defectReport) {
@@ -72,4 +72,39 @@ async function newdefectphoto (uid, ext) {
     ext, uid);
 }
 
-module.exports = {login, authenticate, newdefectreport, newdefectphoto};
+/*
+CREATE TABLE suggestion_reports (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    uid TEXT NOT NULL,
+    date INTEGER NOT NULL,
+    school_id TEXT NOT NULL,
+    title TEXT NOT NULL,
+    description TEXT NOT NULL
+);
+*/
+
+async function newsuggestionreport (suggestionReport) {
+    const db = await openDb('./server/database.db');
+    const uid = uuidv4().replace(/[\r\n]+/g, '');
+    await db.run(
+        `INSERT INTO 
+            suggestion_reports
+            (uid, date, school_id, title, description)
+            VALUES (?, ?, ?, ?, ?)
+        `, 
+        uid,
+        Date.now(),
+        suggestionReport.schoolID,
+        suggestionReport.title,
+        suggestionReport.description
+    );
+    return uid;
+}
+
+module.exports = {
+    login,
+    authenticate,
+    newdefectreport,
+    newdefectphoto,
+    newsuggestionreport
+};

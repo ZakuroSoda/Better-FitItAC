@@ -6,7 +6,7 @@ function SuggestionForm(props) {
   const {user, page, setPage} = props;
 
   const [suggestionReport, setSuggestionReport] = useState({
-    'school-id': user,
+    'schoolID': user,
     'title': '',
     'description': ''
   });
@@ -28,7 +28,7 @@ function SuggestionForm(props) {
     })
     .then(() => {
       setSuggestionReport({
-        'school-id': user,
+        'schoolID': user,
         'title': '',
         'description': ''
       });
@@ -51,7 +51,7 @@ function SuggestionForm(props) {
               onChange={(e) => {
                 setSuggestionReport({
                   ...suggestionReport,
-                  "school-id": user,
+                  "schoolID": user,
                   title: e.target.value
                 });
               }}
