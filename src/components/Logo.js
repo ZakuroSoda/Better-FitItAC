@@ -6,7 +6,7 @@ function Logo(){
         <img 
           src="/images/job_penki_ojiisan.png"
           className='img-fluid pb-2'
-          style={{ maxWidth: '50%', height: 'auto' }}
+          style={{ maxWidth: '20%', height: 'auto' }}
           alt="logo"
         />
         <h1 className='mb-3'>

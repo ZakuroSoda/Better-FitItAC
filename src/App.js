@@ -6,6 +6,7 @@ import Error from './components/Error';
 import DefectForm from './components/DefectForm';
 import SuggestionForm from './components/SuggestionForm';
 import Menu from './components/Menu';
+import ReportsList from './components/ReportsList';
 
 function getCookie(name) {
   const value = `; ${document.cookie}`;
@@ -44,6 +45,7 @@ function App() {
         <Error errorMessage={errorMessage}/>
         <Login page={page} setPage={setPage} setUser={setUser} setErrorMessage={setErrorMessage}/>
         <Menu page={page} setPage={setPage}/>
+        <ReportsList page={page} user={user}/>
         <DefectForm user={user} page={page} setPage={setPage}/>
         <SuggestionForm user={user} page={page} setPage={setPage}/>
       </div>

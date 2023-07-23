@@ -5,7 +5,7 @@ function Menu(props) {
     if (page === 'menu') {
         return (
             <>
-                <div className="d-flex justify-content-center align-items-center p-2">
+                <div className="d-flex justify-content-center align-items-center p-2 m-2">
                     <button
                         className="btn btn-primary m-2"
                         onClick={() => setPage('defect')}>

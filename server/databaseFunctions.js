@@ -101,10 +101,25 @@ async function newsuggestionreport (suggestionReport) {
     return uid;
 }
 
+async function getdefectreports (schoolID) {
+    const db = await openDb('./server/database.db');
+    let reports = await db.all('SELECT * FROM defect_reports WHERE school_id = ?', schoolID);
+    for (let i = 0; i < reports.length; i++) {
+        reports[i].date = new Date(reports[i].date).toISOString().split('T')[0];
+        reports[i].resolved_status = reports[i].resolved_status === 0 ? 'Open' : 'Resolved';
+        delete reports[i].id;
+        delete reports[i].school_id;
+        delete reports[i].image_extension;
+        delete reports[i].description;
+    }
+    return reports;
+}
+
 module.exports = {
     login,
     authenticate,
     newdefectreport,
     newdefectphoto,
-    newsuggestionreport
+    newsuggestionreport,
+    getdefectreports
 };

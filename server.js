@@ -9,7 +9,8 @@ const { login,
   authenticate,
   newdefectreport,
   newdefectphoto,
-  newsuggestionreport
+  newsuggestionreport,
+  getdefectreports
 } = require('./server/databaseFunctions.js');
 
 const app = express();
@@ -41,8 +42,19 @@ app.get('/newtoken', (req, res) => {
     } else {
       res.sendStatus(401);
     }
-  });  
-  
+  });
+
+});
+
+app.get('/getdefectreports', (req, res) => {
+  const username = req.query.username;
+  getdefectreports(username).then((defectReports) => {
+    if (defectReports.length > 0) {
+      res.send(defectReports);
+    } else {
+      res.sendStatus(404);
+    }
+  });
 });
 
 app.post('/newdefectreport', (req, res) => {
@@ -50,13 +62,13 @@ app.post('/newdefectreport', (req, res) => {
   const categories = ['Lights', 'Projector/Sound System', 'Air-Con', 'Other Electrical', 'Toilet', 'Building', 'Other']
   const updatedDefectReport = {
     ...defectReport,
-    category: categories[defectReport.category-1],
+    category: categories[defectReport.category - 1],
   }
-  
+  console.log(updatedDefectReport)
   newdefectreport(updatedDefectReport)
-  .then((uid) => {
-    res.send(uid);
-  });
+    .then((uid) => {
+      res.send(uid);
+    });
 
 });
 
@@ -65,7 +77,7 @@ app.post('/newdefectphoto', (req, res) => {
   const file = req.files?.file;
   const uid = req.body.id;
 
-  const uploadDir = path.join(__dirname, 'uploads');
+  const uploadDir = path.join(__dirname, 'public/uploads');
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
   }
@@ -87,9 +99,9 @@ app.post('/newdefectphoto', (req, res) => {
 app.post('/newsuggestionreport', (req, res) => {
   const suggestionReport = req.body;
   newsuggestionreport(suggestionReport)
-  .then((uid) => {
-    res.send(uid);
-  });
+    .then((uid) => {
+      res.send(uid);
+    });
 });
 
 app.listen(port, () => {
