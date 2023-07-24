@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Nav, Tab, Card, Button } from 'react-bootstrap';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Admin(props) {
     const { page, user } = props;
@@ -17,7 +19,7 @@ function Admin(props) {
             })
             .then(data => setDefects(data))
             .catch(err => console.log(err));
-    }, [user, page]);
+    }, [user, page, defects]);
 
     useEffect(() => {
         fetch(`http://localhost:2000/getsuggestionreportsall`)
@@ -29,11 +31,20 @@ function Admin(props) {
             })
             .then(data => setSuggestions(data))
             .catch(err => console.log(err));
-    }, [user, page]);
+    }, [user, page, suggestions]);
+
+    const handleResolveDefect = (uid) => {
+        fetch(`http://localhost:2000/resolvedefectreport?uid=${uid}`)
+            .then(res => {
+            toast.success(`Defect has been resolved!`, {position: "bottom-right"});
+            setDefects(defects.filter(defect => defect.uid !== uid));
+        })
+    }
 
     if (page === 'admin') {
         return (
             <div className="container my-4 mx-5">
+                <ToastContainer />
                 <Card>
                     <Card.Header>
                         <Nav variant="tabs" activeKey={tab}>
@@ -63,13 +74,13 @@ function Admin(props) {
                                                     Description: {report.description}<br />
 
                                                 </Card.Text>
-                                                {(typeof(report.image) == "object") ? (
-                                                    'No image attached'
-                                                ) : (
-                                                    `Image extension: ${typeof(report.image_extension)}`
+                                                {(report.image_extension == null) ? null : (
+                                                    <a className="btn btn-secondary" target="_blank" rel="noreferrer" href={`/uploads/${report.uid}${report.image_extension}`}>📸 Open Image</a>
                                                 )}
-
-                                                <Button variant="primary">✔ Resolve</Button>
+                                                <Button
+                                                    variant="primary"
+                                                    className='mx-1'
+                                                    onClick={() => handleResolveDefect(report.uid)}>✔ Resolve</Button>
                                                 <hr />
                                             </div>
                                         ))

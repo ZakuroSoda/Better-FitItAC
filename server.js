@@ -13,7 +13,8 @@ const { login,
   getdefectreports,
   getsuggestionreports,
   getdefectreportsall,
-  getsuggestionreportsall
+  getsuggestionreportsall,
+  resolvedefectreport
 } = require('./server/databaseFunctions.js');
 
 const app = express();
@@ -88,6 +89,13 @@ app.get('/getsuggestionreportsall', (req, res) => {
     } else {
       res.sendStatus(404);
     }
+  });
+});
+
+app.get('/resolvedefectreport', (req, res) => {
+  const uid = req.query.uid;
+  resolvedefectreport(uid).then(() => {
+    res.sendStatus(200);
   });
 });
 
