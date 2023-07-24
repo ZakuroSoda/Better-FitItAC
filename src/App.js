@@ -7,6 +7,7 @@ import DefectForm from './components/DefectForm';
 import SuggestionForm from './components/SuggestionForm';
 import Menu from './components/Menu';
 import ReportsList from './components/ReportsList';
+import Admin from './components/Admin';
 
 function getCookie(name) {
   const value = `; ${document.cookie}`;
@@ -33,7 +34,11 @@ function App() {
         })
         .then(username => {
           setUser(username);
+          if (user === 'admin') {
+            setPage('admin');
+          } else {
           setPage('menu');
+          }
         });
     }
   }, [user]);
@@ -48,6 +53,7 @@ function App() {
         <ReportsList page={page} user={user}/>
         <DefectForm user={user} page={page} setPage={setPage}/>
         <SuggestionForm user={user} page={page} setPage={setPage}/>
+        <Admin page={page} user={user}/>
       </div>
     </div>
   );

@@ -11,7 +11,9 @@ const { login,
   newdefectphoto,
   newsuggestionreport,
   getdefectreports,
-  getsuggestionreports
+  getsuggestionreports,
+  getdefectreportsall,
+  getsuggestionreportsall
 } = require('./server/databaseFunctions.js');
 
 const app = express();
@@ -69,6 +71,26 @@ app.get('/getsuggestionreports', (req, res) => {
   });
 });
 
+app.get('/getdefectreportsall', (req, res) => {
+  getdefectreportsall().then((defectReports) => {
+    if (defectReports.length > 0) {
+      res.send(defectReports);
+    } else {
+      res.sendStatus(404);
+    }
+  });
+});
+
+app.get('/getsuggestionreportsall', (req, res) => {
+  getsuggestionreportsall().then((suggestionReports) => {
+    if (suggestionReports.length > 0) {
+      res.send(suggestionReports);
+    } else {
+      res.sendStatus(404);
+    }
+  });
+});
+
 app.post('/newdefectreport', (req, res) => {
   const defectReport = req.body;
   const categories = ['Lights', 'Projector/Sound System', 'Air-Con', 'Other Electrical', 'Toilet', 'Building', 'Other']
@@ -82,7 +104,6 @@ app.post('/newdefectreport', (req, res) => {
     });
 
 });
-
 
 app.post('/newdefectphoto', (req, res) => {
   const file = req.files?.file;

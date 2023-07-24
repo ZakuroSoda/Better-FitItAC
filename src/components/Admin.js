@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Nav, Tab, Card } from 'react-bootstrap';
+import { Nav, Tab, Card, Button } from 'react-bootstrap';
 
-function ReportsList(props) {
+function Admin(props) {
     const { page, user } = props;
     const [tab, setTab] = useState('#defects');
     const [defects, setDefects] = useState(null);
     const [suggestions, setSuggestions] = useState(null);
 
     useEffect(() => {
-        fetch(`http://localhost:2000/getdefectreports?username=${user}`)
+        fetch(`http://localhost:2000/getdefectreportsall`)
             .then(res => {
                 if (res.status === 404) {
                     return null;
@@ -20,7 +20,7 @@ function ReportsList(props) {
     }, [user, page]);
 
     useEffect(() => {
-        fetch(`http://localhost:2000/getsuggestionreports?username=${user}`)
+        fetch(`http://localhost:2000/getsuggestionreportsall`)
             .then(res => {
                 if (res.status === 404) {
                     return null;
@@ -31,7 +31,7 @@ function ReportsList(props) {
             .catch(err => console.log(err));
     }, [user, page]);
 
-    if (page === 'menu') {
+    if (page === 'admin') {
         return (
             <div className="container my-4 mx-5">
                 <Card>
@@ -56,11 +56,20 @@ function ReportsList(props) {
                                             <div key={report.uid}>
                                                 <Card.Title>{report.title}</Card.Title>
                                                 <Card.Text>
+                                                    From: {report.school_id}<br />
                                                     Date Reported: {report.date}<br />
                                                     Category: {report.category}<br />
                                                     Location: {report.location}<br />
-                                                    Status: <strong>{report.resolved_status}</strong>
+                                                    Description: {report.description}<br />
+
                                                 </Card.Text>
+                                                {(typeof(report.image) == "object") ? (
+                                                    'No image attached'
+                                                ) : (
+                                                    `Image extension: ${typeof(report.image_extension)}`
+                                                )}
+
+                                                <Button variant="primary">✔ Resolve</Button>
                                                 <hr />
                                             </div>
                                         ))
@@ -92,4 +101,4 @@ function ReportsList(props) {
     }; return null;
 }
 
-export default ReportsList;
+export default Admin;
