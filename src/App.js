@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 
 import Logo from './components/Logo';
 import Login from './components/Login';
@@ -37,7 +37,7 @@ function App() {
           if (user === 'admin') {
             setPage('admin');
           } else {
-          setPage('menu');
+            setPage('menu');
           }
         });
     }
@@ -47,13 +47,13 @@ function App() {
     <div className='App'>
       <div className="container d-flex flex-column justify-content-center align-items-center p-2 pt-5">
         <Logo />
-        <Error errorMessage={errorMessage}/>
-        <Login page={page} setPage={setPage} setUser={setUser} setErrorMessage={setErrorMessage}/>
-        <Menu page={page} setPage={setPage}/>
-        <ReportsList page={page} user={user}/>
-        <DefectForm user={user} page={page} setPage={setPage}/>
-        <SuggestionForm user={user} page={page} setPage={setPage}/>
-        <Admin page={page} user={user}/>
+        <Error errorMessage={errorMessage} />
+        <Login page={page} setPage={setPage} setUser={setUser} setErrorMessage={setErrorMessage} />
+        <Menu page={page} setPage={setPage} />
+        <ReportsList page={page} user={user} />
+        <DefectForm user={user} page={page} setPage={setPage} />
+        <SuggestionForm user={user} page={page} setPage={setPage} />
+        <Admin page={page} user={user} />
       </div>
     </div>
   );

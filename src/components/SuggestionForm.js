@@ -3,7 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function SuggestionForm(props) {
-  const {user, page, setPage} = props;
+  const { user, page, setPage } = props;
 
   const [suggestionReport, setSuggestionReport] = useState({
     'schoolID': user,
@@ -15,7 +15,7 @@ function SuggestionForm(props) {
     event.preventDefault();
 
     if (suggestionReport.title === '' || suggestionReport.description === '') {
-      toast.error('Please fill in all fields', {position: "bottom-right"});
+      toast.error('Please fill in all fields', { position: "bottom-right" });
       return;
     };
 
@@ -26,20 +26,20 @@ function SuggestionForm(props) {
       },
       body: JSON.stringify(suggestionReport)
     })
-    .then(() => {
-      setSuggestionReport({
-        'schoolID': user,
-        'title': '',
-        'description': ''
-      });
-      toast.success('Suggestion submitted successfully!', {position: "bottom-right"});
-    })
+      .then(() => {
+        setSuggestionReport({
+          'schoolID': user,
+          'title': '',
+          'description': ''
+        });
+        toast.success('Suggestion submitted successfully!', { position: "bottom-right" });
+      })
   }
-  if (page === 'suggestion'){
+  if (page === 'suggestion') {
     return (
       <>
         <ToastContainer />
-        
+
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="title" className="form-label">Title</label>

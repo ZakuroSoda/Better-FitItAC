@@ -3,7 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function DefectForm(props) {
-  const {user, page, setPage} = props;
+  const { user, page, setPage } = props;
 
   const [defectReport, setDefectReport] = useState({
     'schoolID': user,
@@ -18,7 +18,7 @@ function DefectForm(props) {
     event.preventDefault();
 
     if (defectReport.title === '' || defectReport.location === '' || defectReport.description === '') {
-      toast.error('Please fill in all fields', {position: "bottom-right"});
+      toast.error('Please fill in all fields', { position: "bottom-right" });
       return;
     };
 
@@ -29,36 +29,36 @@ function DefectForm(props) {
       },
       body: JSON.stringify(defectReport)
     })
-    .then(res => res.text())
-    .then(id => {
-      if (!selectedFile) return;
-      
-      const formData = new FormData();
-      formData.append('file', selectedFile);
-      formData.append('id', id);
-      // DO NOT DEFINE CONTENT-TYPE HEADER
-      fetch('http://localhost:2000/newdefectphoto', {
-        method: 'POST',
-        body: formData
-      });
-    })
-    .then(() => {
-      setDefectReport({
-        'schoolID': user,
-        'title': '',
-        'category': '1',
-        'location': '',
-        'description': ''
-      });
-      setSelectedFile(null);
-      toast.success('Defect report submitted successfully!', {position: "bottom-right"});
-    })
+      .then(res => res.text())
+      .then(id => {
+        if (!selectedFile) return;
+
+        const formData = new FormData();
+        formData.append('file', selectedFile);
+        formData.append('id', id);
+        // DO NOT DEFINE CONTENT-TYPE HEADER
+        fetch('http://localhost:2000/newdefectphoto', {
+          method: 'POST',
+          body: formData
+        });
+      })
+      .then(() => {
+        setDefectReport({
+          'schoolID': user,
+          'title': '',
+          'category': '1',
+          'location': '',
+          'description': ''
+        });
+        setSelectedFile(null);
+        toast.success('Defect report submitted successfully!', { position: "bottom-right" });
+      })
   }
-  if (page === 'defect'){
+  if (page === 'defect') {
     return (
       <>
         <ToastContainer />
-        
+
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="title" className="form-label">Title</label>
