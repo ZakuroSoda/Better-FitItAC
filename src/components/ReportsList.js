@@ -5,11 +5,19 @@ function ReportsList(props) {
     const { page, user } = props;
     const [tab, setTab] = useState('#defects');
     const [defects, setDefects] = useState(null);
+    const [suggestions, setSuggestions] = useState(null);
 
     useEffect(() => {
         fetch(`http://localhost:2000/getdefectreports?username=${user}`)
             .then(res => res.json())
             .then(data => setDefects(data))
+            .catch(err => console.log(err));
+    }, [user, page]);
+
+    useEffect(() => {
+        fetch(`http://localhost:2000/getsuggestionreports?username=${user}`)
+            .then(res => res.json())
+            .then(data => setSuggestions(data))
             .catch(err => console.log(err));
     }, [user, page]);
 
@@ -50,8 +58,20 @@ function ReportsList(props) {
                                 </Tab.Pane>
 
                                 <Tab.Pane eventKey="#suggestions">
-                                    <Card.Title>Submitted Suggestions</Card.Title>
-                                    <Card.Text>Content for the Suggestions tab goes here.</Card.Text>
+                                    {suggestions === null ? (
+                                        <Card.Text>No suggestions submitted</Card.Text>
+                                    ) : (
+                                        suggestions.map(suggestion => (
+                                            <div key={suggestion.uid}>
+                                                <Card.Title>{suggestion.title}</Card.Title>
+                                                <Card.Text>
+                                                    Date suggested: {suggestion.date}<br />
+                                                    Content: {suggestion.description}
+                                                </Card.Text>
+                                                <hr />
+                                            </div>
+                                        ))
+                                    )}
                                 </Tab.Pane>
                             </Tab.Content>
                         </Tab.Container>

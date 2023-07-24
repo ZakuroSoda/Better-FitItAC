@@ -10,7 +10,8 @@ const { login,
   newdefectreport,
   newdefectphoto,
   newsuggestionreport,
-  getdefectreports
+  getdefectreports,
+  getsuggestionreports
 } = require('./server/databaseFunctions.js');
 
 const app = express();
@@ -57,6 +58,17 @@ app.get('/getdefectreports', (req, res) => {
   });
 });
 
+app.get('/getsuggestionreports', (req, res) => {
+  const username = req.query.username;
+  getsuggestionreports(username).then((suggestionReports) => {
+    if (suggestionReports.length > 0) {
+      res.send(suggestionReports);
+    } else {
+      res.sendStatus(404);
+    }
+  });
+});
+
 app.post('/newdefectreport', (req, res) => {
   const defectReport = req.body;
   const categories = ['Lights', 'Projector/Sound System', 'Air-Con', 'Other Electrical', 'Toilet', 'Building', 'Other']
@@ -64,7 +76,6 @@ app.post('/newdefectreport', (req, res) => {
     ...defectReport,
     category: categories[defectReport.category - 1],
   }
-  console.log(updatedDefectReport)
   newdefectreport(updatedDefectReport)
     .then((uid) => {
       res.send(uid);
