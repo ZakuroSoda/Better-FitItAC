@@ -3,6 +3,8 @@
 /public/uploads/*
 !/public/uploads/.gitkeep
 
+/server/database.db
+
 # dependencies
 /node_modules
 /.pnp

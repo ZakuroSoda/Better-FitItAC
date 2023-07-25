@@ -16,6 +16,8 @@ function getCookie(name) {
 }
 
 function App() {
+  const API_URL = process.env.REACT_APP_API_URL;
+  console.log(API_URL)
 
   const [user, setUser] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
@@ -24,7 +26,7 @@ function App() {
   useEffect(() => {
     const token = getCookie('token');
     if (token) {
-      fetch(`http://localhost:2000/getusername?token=${token}`)
+      fetch(`${API_URL}/getusername?token=${token}`)
         .then(res => {
           if (res.status === 401) {
             setErrorMessage('Session token error');
@@ -33,6 +35,9 @@ function App() {
           return res.text();
         })
         .then(username => {
+          if (!username) {
+            return;
+          }
           setUser(username);
           if (user === 'admin') {
             setPage('admin');
@@ -48,12 +53,12 @@ function App() {
       <div className="container d-flex flex-column justify-content-center align-items-center p-2 pt-5">
         <Logo />
         <Error errorMessage={errorMessage} />
-        <Login page={page} setPage={setPage} setUser={setUser} setErrorMessage={setErrorMessage} />
+        <Login page={page} setPage={setPage} setUser={setUser} setErrorMessage={setErrorMessage} API_URL={API_URL} />
         <Menu page={page} setPage={setPage} />
-        <ReportsList page={page} user={user} />
-        <DefectForm user={user} page={page} setPage={setPage} />
-        <SuggestionForm user={user} page={page} setPage={setPage} />
-        <Admin page={page} user={user} />
+        <ReportsList page={page} user={user} API_URL={API_URL} />
+        <DefectForm user={user} page={page} setPage={setPage} API_URL={API_URL} />
+        <SuggestionForm user={user} page={page} setPage={setPage} API_URL={API_URL} />
+        <Admin page={page} user={user} API_URL={API_URL} />
       </div>
     </div>
   );

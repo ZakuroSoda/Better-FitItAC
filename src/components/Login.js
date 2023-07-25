@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 
 function Login(props) {
-  const { page, setPage, setUser, setErrorMessage } = props;
+  const { page, setPage, setUser, setErrorMessage, API_URL } = props;
   const [schoolID, setSchoolID] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch(`http://localhost:2000/newtoken?username=${schoolID}`)
+    fetch(`${API_URL}/newtoken?username=${schoolID}`)
       .then(res => {
         if (res.status === 401) {
           setErrorMessage("Invalid School ID");

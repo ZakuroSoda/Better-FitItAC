@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Nav, Tab, Card } from 'react-bootstrap';
 
 function ReportsList(props) {
-  const { page, user } = props;
+  const { page, user, API_URL } = props;
   const [tab, setTab] = useState('#defects');
   const [defects, setDefects] = useState(null);
   const [suggestions, setSuggestions] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:2000/getdefectreports?username=${user}`)
+    fetch(`${API_URL}/getdefectreports?username=${user}`)
       .then(res => {
         if (res.status === 404) {
           return null;
@@ -20,7 +20,7 @@ function ReportsList(props) {
   }, [user, page]);
 
   useEffect(() => {
-    fetch(`http://localhost:2000/getsuggestionreports?username=${user}`)
+    fetch(`${API_URL}/getsuggestionreports?username=${user}`)
       .then(res => {
         if (res.status === 404) {
           return null;

@@ -3,7 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function DefectForm(props) {
-  const { user, page, setPage } = props;
+  const { user, page, setPage, API_URL } = props;
 
   const [defectReport, setDefectReport] = useState({
     'schoolID': user,
@@ -22,7 +22,7 @@ function DefectForm(props) {
       return;
     };
 
-    fetch('http://localhost:2000/newdefectreport', {
+    fetch(`${API_URL}/newdefectreport`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",
@@ -37,7 +37,7 @@ function DefectForm(props) {
         formData.append('file', selectedFile);
         formData.append('id', id);
         // DO NOT DEFINE CONTENT-TYPE HEADER
-        fetch('http://localhost:2000/newdefectphoto', {
+        fetch(`${API_URL}/newdefectphoto`, {
           method: 'POST',
           body: formData
         });

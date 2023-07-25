@@ -4,13 +4,13 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function Admin(props) {
-  const { page, user } = props;
+  const { page, user, API_URL } = props;
   const [tab, setTab] = useState('#defects');
   const [defects, setDefects] = useState(null);
   const [suggestions, setSuggestions] = useState(null);
 
   useEffect(() => {
-    fetch(`http://localhost:2000/getdefectreportsall`)
+    fetch(`${API_URL}/getdefectreportsall`)
       .then(res => {
         if (res.status === 404) {
           return null;
@@ -22,7 +22,7 @@ function Admin(props) {
   }, [user, page, defects]);
 
   useEffect(() => {
-    fetch(`http://localhost:2000/getsuggestionreportsall`)
+    fetch(`${API_URL}/getsuggestionreportsall`)
       .then(res => {
         if (res.status === 404) {
           return null;

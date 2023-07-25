@@ -3,7 +3,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function SuggestionForm(props) {
-  const { user, page, setPage } = props;
+  const { user, page, setPage, API_URL } = props;
 
   const [suggestionReport, setSuggestionReport] = useState({
     'schoolID': user,
@@ -19,7 +19,7 @@ function SuggestionForm(props) {
       return;
     };
 
-    fetch('http://localhost:2000/newsuggestionreport', {
+    fetch(`${API_URL}/newsuggestionreport`, {
       method: 'POST',
       headers: {
         "Content-Type": "application/json",

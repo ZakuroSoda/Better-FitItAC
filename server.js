@@ -14,11 +14,14 @@ const { login,
   getsuggestionreports,
   getdefectreportsall,
   getsuggestionreportsall,
-  resolvedefectreport
+  resolvedefectreport,
+  newDb
 } = require('./server/databaseFunctions.js');
 
 const app = express();
 const port = 2000;
+
+newDb();
 
 app.use(cors(), bodyParser.json(), fileUpload());
 
