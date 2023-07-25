@@ -23,6 +23,7 @@ function Login(props) {
         setUser(schoolID);
         setPage('menu');
       })
+    setSchoolID("");
   }
 
   if (page === 'login') {

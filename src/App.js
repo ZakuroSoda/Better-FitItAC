@@ -53,7 +53,7 @@ function App() {
         <Logo />
         <Error errorMessage={errorMessage} />
         <Login page={page} setPage={setPage} setUser={setUser} setErrorMessage={setErrorMessage} API_URL={API_URL} />
-        <Menu page={page} setPage={setPage} />
+        <Menu page={page} setPage={setPage} setUser={setUser} />
         <ReportsList page={page} user={user} API_URL={API_URL} />
         <DefectForm user={user} page={page} setPage={setPage} API_URL={API_URL} />
         <SuggestionForm user={user} page={page} setPage={setPage} API_URL={API_URL} />
