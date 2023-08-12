@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Nav, Tab, Card } from 'react-bootstrap';
+import styles from './ReportsList.module.css'
 
 function ReportsList(props) {
   const { page, user, API_URL } = props;
   const [tab, setTab] = useState('#defects');
   const [defects, setDefects] = useState(null);
+  const [defectsFilter, setDefectsFilter] = useState(['open']);
   const [suggestions, setSuggestions] = useState(null);
 
   useEffect(() => {
@@ -15,7 +17,19 @@ function ReportsList(props) {
         }
         return res.json();
       })
-      .then(data => setDefects(data))
+      .then(data => { 
+        //sort the defects to put the open ones first (copilot wrote this)
+        data.sort((a, b) => {
+          if (a.resolved_status.toLowerCase() === 'open' && b.resolved_status.toLowerCase() !== 'open') {
+            return -1;
+          } else if (a.resolved_status.toLowerCase() !== 'open' && b.resolved_status.toLowerCase() === 'open') {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+        setDefects(data);
+      })
       .catch(err => console.log(err));
   }, [user, page]);
 
@@ -30,6 +44,10 @@ function ReportsList(props) {
       .then(data => setSuggestions(data))
       .catch(err => console.log(err));
   }, [user, page]);
+
+  useEffect(() => {
+    console.log(defectsFilter);
+  }, [defectsFilter]);
 
   if (page === 'menu') {
     return (
@@ -49,10 +67,46 @@ function ReportsList(props) {
             <Tab.Container activeKey={tab}>
               <Tab.Content>
                 <Tab.Pane eventKey="#defects">
+                  <div className={styles.toggleWrapper}>
+                    <div className={`${styles.toggle} ${defectsFilter.includes('open') ? styles.active : styles.inactive}`}
+                      onClick={() => 
+                        defectsFilter.includes('open') ? 
+                        setDefectsFilter(defectsFilter.filter(item => item !== 'open')) : 
+                        setDefectsFilter([...defectsFilter, 'open'])
+                      }
+                    >
+                      Open
+                    </div>
+                    <div className={`${styles.toggle} ${defectsFilter.includes('resolved') ? styles.active : styles.inactive}`}
+                      onClick={() => 
+                        defectsFilter.includes('resolved') ?
+                        setDefectsFilter(defectsFilter.filter(item => item !== 'resolved')) :
+                        setDefectsFilter([...defectsFilter, 'resolved'])
+                      }
+                    >
+                      Resolved
+                    </div>
+                  </div>
+                  {
+                    defectsFilter.length === 0 &&
+                    <Card.Text>Nothing selected</Card.Text>
+                  }
+                  {/*Todo: fix this filthy conditional rendering*/}
+                  {
+                    //show text "no open defects" if no open defects are found
+                    defectsFilter[0] === 'open' && defects !== null && defects.filter(item => item.resolved_status.toLowerCase() === 'open').length === 0 &&
+                    <Card.Text>No open defects</Card.Text>
+                  }
+                  {
+                    //show text "no resolved defects" if no resolved defects are found
+                    defectsFilter.includes('resolved') && !defectsFilter.includes('open') && defects !== null && defects.filter(item => item.resolved_status.toLowerCase() !== 'open').length === 0 &&
+                    <Card.Text>No resolved defects</Card.Text>
+                  }
                   {defects === null ? (
                     <Card.Text>No defects reported</Card.Text>
                   ) : (
                     defects.map(report => (
+                      defectsFilter.includes(report.resolved_status.toLowerCase()) &&
                       <div key={report.uid}>
                         <Card.Title>{report.title}</Card.Title>
                         <Card.Text>

@@ -1,0 +1,39 @@
+.toggleWrapper {
+    display: flex;
+    justify-content: space-around;
+    margin: 16px 0px;
+    border: solid 1px black;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.toggle {
+    box-sizing: border-box;
+    flex-grow: 1;
+    padding: 10px 0px;
+    text-align: center;
+    border-right: solid 1px black;
+    cursor: pointer;
+}
+
+.toggle.active {
+    background: rgba(40, 120, 180, 0.6);
+    color: white;
+}
+
+.toggle.inactive {
+    background: rgba(0, 0, 0, 0.03);
+    color: black;
+}
+
+.toggle.active:hover {
+    background: rgba(40, 120, 180, 0.8);
+}
+
+.toggle.inactive:hover {
+    background: rgba(0, 0, 0, 0.07);
+}
+
+.toggle:last-child {
+    border-right: none;
+}
