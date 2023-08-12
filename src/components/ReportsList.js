@@ -17,7 +17,7 @@ function ReportsList(props) {
         }
         return res.json();
       })
-      .then(data => { 
+      .then(data => {
         //sort the defects to put the open ones first (copilot wrote this)
         data.sort((a, b) => {
           if (a.resolved_status.toLowerCase() === 'open' && b.resolved_status.toLowerCase() !== 'open') {
@@ -45,10 +45,6 @@ function ReportsList(props) {
       .catch(err => console.log(err));
   }, [user, page]);
 
-  useEffect(() => {
-    console.log(defectsFilter);
-  }, [defectsFilter]);
-
   if (page === 'menu') {
     return (
       <div className="container my-4 mx-5">
@@ -69,19 +65,19 @@ function ReportsList(props) {
                 <Tab.Pane eventKey="#defects">
                   <div className={styles.toggleWrapper}>
                     <div className={`${styles.toggle} ${defectsFilter.includes('open') ? styles.active : styles.inactive}`}
-                      onClick={() => 
-                        defectsFilter.includes('open') ? 
-                        setDefectsFilter(defectsFilter.filter(item => item !== 'open')) : 
-                        setDefectsFilter([...defectsFilter, 'open'])
+                      onClick={() =>
+                        defectsFilter.includes('open') ?
+                          setDefectsFilter(defectsFilter.filter(item => item !== 'open')) :
+                          setDefectsFilter([...defectsFilter, 'open'])
                       }
                     >
                       Open
                     </div>
                     <div className={`${styles.toggle} ${defectsFilter.includes('resolved') ? styles.active : styles.inactive}`}
-                      onClick={() => 
+                      onClick={() =>
                         defectsFilter.includes('resolved') ?
-                        setDefectsFilter(defectsFilter.filter(item => item !== 'resolved')) :
-                        setDefectsFilter([...defectsFilter, 'resolved'])
+                          setDefectsFilter(defectsFilter.filter(item => item !== 'resolved')) :
+                          setDefectsFilter([...defectsFilter, 'resolved'])
                       }
                     >
                       Resolved

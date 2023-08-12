@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { Nav, Tab, Card, Button } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import styles from './ReportsList.module.css'
 
 function Admin(props) {
   const { page, user, API_URL } = props;
   const [tab, setTab] = useState('#defects');
   const [defects, setDefects] = useState(null);
+  const [defectsFilter, setDefectsFilter] = useState(['open']);
   const [suggestions, setSuggestions] = useState(null);
 
   useEffect(() => {
@@ -17,7 +19,18 @@ function Admin(props) {
         }
         return res.json();
       })
-      .then(data => setDefects(data))
+      .then(data => {
+        data.sort((a, b) => {
+          if (a.resolved_status.toLowerCase() === 'open' && b.resolved_status.toLowerCase() !== 'open') {
+            return -1;
+          } else if (a.resolved_status.toLowerCase() !== 'open' && b.resolved_status.toLowerCase() === 'open') {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+        setDefects(data);
+      })
       .catch(err => console.log(err));
   }, [user, page, defects]);
 
@@ -60,10 +73,46 @@ function Admin(props) {
             <Tab.Container activeKey={tab}>
               <Tab.Content>
                 <Tab.Pane eventKey="#defects">
+                  <div className={styles.toggleWrapper}>
+                    <div className={`${styles.toggle} ${defectsFilter.includes('open') ? styles.active : styles.inactive}`}
+                      onClick={() =>
+                        defectsFilter.includes('open') ?
+                          setDefectsFilter(defectsFilter.filter(item => item !== 'open')) :
+                          setDefectsFilter([...defectsFilter, 'open'])
+                      }
+                    >
+                      Open
+                    </div>
+                    <div className={`${styles.toggle} ${defectsFilter.includes('resolved') ? styles.active : styles.inactive}`}
+                      onClick={() =>
+                        defectsFilter.includes('resolved') ?
+                          setDefectsFilter(defectsFilter.filter(item => item !== 'resolved')) :
+                          setDefectsFilter([...defectsFilter, 'resolved'])
+                      }
+                    >
+                      Resolved
+                    </div>
+                  </div>
+                  {
+                    defectsFilter.length === 0 &&
+                    <Card.Text>Nothing selected</Card.Text>
+                  }
+                  {/*Todo: fix this filthy conditional rendering*/}
+                  {
+                    //show text "no open defects" if no open defects are found
+                    defectsFilter[0] === 'open' && defects !== null && defects.filter(item => item.resolved_status.toLowerCase() === 'open').length === 0 &&
+                    <Card.Text>No open defects</Card.Text>
+                  }
+                  {
+                    //show text "no resolved defects" if no resolved defects are found
+                    defectsFilter.includes('resolved') && !defectsFilter.includes('open') && defects !== null && defects.filter(item => item.resolved_status.toLowerCase() !== 'open').length === 0 &&
+                    <Card.Text>No resolved defects</Card.Text>
+                  }
                   {defects === null ? (
                     <Card.Text>No defects reported</Card.Text>
                   ) : (
                     defects.map(report => (
+                      defectsFilter.includes(report.resolved_status.toLowerCase()) &&
                       <div key={report.uid}>
                         <Card.Title>{report.title}</Card.Title>
                         <Card.Text>
@@ -76,10 +125,12 @@ function Admin(props) {
                         {(report.image_extension == null) ? null : (
                           <a className="btn btn-secondary" target="_blank" rel="noreferrer" href={`/uploads/${report.uid}${report.image_extension}`}>📸 Open Image</a>
                         )}
+                        {report.resolved_status.toLowerCase() !== 'open' ? null : (
                         <Button
                           variant="primary"
                           className='mx-1'
                           onClick={() => handleResolveDefect(report.uid)}>✔ Resolve</Button>
+                        )}
                         <hr />
                       </div>
                     ))

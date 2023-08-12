@@ -137,7 +137,7 @@ async function getsuggestionreports(schoolID) {
 
 async function getdefectreportsall() {
   const db = await openDb('./server/database.db');
-  let reports = await db.all('SELECT * FROM defect_reports WHERE resolved_status = 0');
+  let reports = await db.all('SELECT * FROM defect_reports');
   for (let i = 0; i < reports.length; i++) {
     reports[i].date = new Date(reports[i].date).toISOString().split('T')[0];
     reports[i].resolved_status = reports[i].resolved_status === 0 ? 'Open' : 'Resolved';
