@@ -13,8 +13,7 @@ npm run api (in a separate terminal)
 For now, use `admin` username to login.
 
 ## Todo
-- Fix Janky Code (Hacky fixes, line breaks, indentation, left a few console.logs here and there)
-- Lots of Vulnerabilities
-- Error Handling for API Calls and DB Calls
-- Move to MySQL or PostGreSQL DB
-- Fix bad admin auth system
+- [ ] Fix Janky Code
+- [ ] Lots of Vulnerabilities
+- [ ] Error Handling for API Calls and DB Calls
+- [ ] Fix Authentication System in General
