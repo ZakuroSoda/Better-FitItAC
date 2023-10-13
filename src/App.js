@@ -9,6 +9,8 @@ import Menu from './components/Menu';
 import ReportsList from './components/ReportsList';
 import Admin from './components/Admin';
 
+import './App.css';
+
 function getCookie(name) {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);

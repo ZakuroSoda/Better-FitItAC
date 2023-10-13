@@ -48,14 +48,14 @@ function ReportsList(props) {
   if (page === 'menu') {
     return (
       <div className="container my-4 mx-5">
-        <Card>
+        <Card className={styles.card}>
           <Card.Header>
             <Nav variant="tabs" activeKey={tab}>
               <Nav.Item onClick={() => setTab('#defects')}>
                 <Nav.Link eventKey="#defects">Defect Reports</Nav.Link>
               </Nav.Item>
               <Nav.Item onClick={() => setTab('#suggestions')}>
-                <Nav.Link eventKey="#suggestions">Suggestion</Nav.Link>
+                <Nav.Link eventKey="#suggestions">Suggestions</Nav.Link>
               </Nav.Item>
             </Nav>
           </Card.Header>

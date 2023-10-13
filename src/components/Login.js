@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './Login.css';
 
 function Login(props) {
   const { page, setPage, setUser, setErrorMessage, API_URL } = props;
@@ -41,7 +42,7 @@ function Login(props) {
                 value={schoolID}
                 onChange={(e) => setSchoolID(e.target.value)}
               />
-              <button type="submit" className="btn btn-primary" id="button-login">Login</button>
+              <button type="submit" className="btn btn-outline-dark" id="button-login">Login</button>
             </div>
             <div id="school-id-help" className="form-text">E.g. 21john.tan</div>
           </div>
