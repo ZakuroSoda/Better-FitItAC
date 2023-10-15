@@ -25,11 +25,11 @@ newDb();
 
 app.use(cors(), bodyParser.json(), fileUpload());
 
-app.get('/', (req, res) => {
+app.get('/api', (req, res) => {
   res.send('API for FixItAC++');
 });
 
-app.get('/getusername', (req, res) => {
+app.get('/api/getusername', (req, res) => {
   const token = req.query.token;
   authenticate(token).then((user) => {
     if (user) {
@@ -41,7 +41,7 @@ app.get('/getusername', (req, res) => {
 
 });
 
-app.get('/newtoken', (req, res) => {
+app.get('/api/newtoken', (req, res) => {
   const username = req.query.username;
   login(username).then((token) => {
     if (token) {
@@ -53,7 +53,7 @@ app.get('/newtoken', (req, res) => {
 
 });
 
-app.get('/getdefectreports', (req, res) => {
+app.get('/api/getdefectreports', (req, res) => {
   const username = req.query.username;
   getdefectreports(username).then((defectReports) => {
     if (defectReports.length > 0) {
@@ -64,7 +64,7 @@ app.get('/getdefectreports', (req, res) => {
   });
 });
 
-app.get('/getsuggestionreports', (req, res) => {
+app.get('/api/getsuggestionreports', (req, res) => {
   const username = req.query.username;
   getsuggestionreports(username).then((suggestionReports) => {
     if (suggestionReports.length > 0) {
@@ -75,7 +75,7 @@ app.get('/getsuggestionreports', (req, res) => {
   });
 });
 
-app.get('/getdefectreportsall', (req, res) => {
+app.get('/api/getdefectreportsall', (req, res) => {
   getdefectreportsall().then((defectReports) => {
     if (defectReports.length > 0) {
       res.send(defectReports);
@@ -85,7 +85,7 @@ app.get('/getdefectreportsall', (req, res) => {
   });
 });
 
-app.get('/getsuggestionreportsall', (req, res) => {
+app.get('/api/getsuggestionreportsall', (req, res) => {
   getsuggestionreportsall().then((suggestionReports) => {
     if (suggestionReports.length > 0) {
       res.send(suggestionReports);
@@ -95,14 +95,14 @@ app.get('/getsuggestionreportsall', (req, res) => {
   });
 });
 
-app.get('/resolvedefectreport', (req, res) => {
+app.get('/api/resolvedefectreport', (req, res) => {
   const uid = req.query.uid;
   resolvedefectreport(uid).then(() => {
     res.sendStatus(200);
   });
 });
 
-app.post('/newdefectreport', (req, res) => {
+app.post('/api/newdefectreport', (req, res) => {
   const defectReport = req.body;
   const categories = ['Lights', 'Projector/Sound System', 'Air-Con', 'Other Electrical', 'Toilet', 'Building', 'Other']
   const updatedDefectReport = {
@@ -116,7 +116,7 @@ app.post('/newdefectreport', (req, res) => {
 
 });
 
-app.post('/newdefectphoto', (req, res) => {
+app.post('/api/newdefectphoto', (req, res) => {
   const file = req.files?.file;
   const uid = req.body.id;
 
@@ -139,7 +139,7 @@ app.post('/newdefectphoto', (req, res) => {
   });
 });
 
-app.post('/newsuggestionreport', (req, res) => {
+app.post('/api/newsuggestionreport', (req, res) => {
   const suggestionReport = req.body;
   newsuggestionreport(suggestionReport)
     .then((uid) => {

@@ -47,7 +47,7 @@ function Admin(props) {
   }, [user, page, suggestions]);
 
   const handleResolveDefect = (uid) => {
-    fetch(`http://localhost:2000/resolvedefectreport?uid=${uid}`)
+    fetch(`${API_URL}/resolvedefectreport?uid=${uid}`)
       .then(res => {
         toast.success(`Defect has been resolved!`, { position: "bottom-right" });
         setDefects(defects.filter(defect => defect.uid !== uid));
