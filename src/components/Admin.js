@@ -5,14 +5,14 @@ import 'react-toastify/dist/ReactToastify.css';
 import styles from './ReportsList.module.css'
 
 function Admin(props) {
-  const { page, user, API_URL } = props;
+  const { page, user } = props;
   const [tab, setTab] = useState('#defects');
   const [defects, setDefects] = useState(null);
   const [defectsFilter, setDefectsFilter] = useState(['open']);
   const [suggestions, setSuggestions] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_URL}/getdefectreportsall`)
+    fetch(`/api/getdefectreportsall`)
       .then(res => {
         if (res.status === 404) {
           return null;
@@ -35,7 +35,7 @@ function Admin(props) {
   }, [user, page, defects]);
 
   useEffect(() => {
-    fetch(`${API_URL}/getsuggestionreportsall`)
+    fetch(`/api/getsuggestionreportsall`)
       .then(res => {
         if (res.status === 404) {
           return null;
@@ -47,7 +47,7 @@ function Admin(props) {
   }, [user, page, suggestions]);
 
   const handleResolveDefect = (uid) => {
-    fetch(`${API_URL}/resolvedefectreport?uid=${uid}`)
+    fetch(`/api/resolvedefectreport?uid=${uid}`)
       .then(res => {
         toast.success(`Defect has been resolved!`, { position: "bottom-right" });
         setDefects(defects.filter(defect => defect.uid !== uid));

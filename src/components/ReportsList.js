@@ -3,14 +3,14 @@ import { Nav, Tab, Card } from 'react-bootstrap';
 import styles from './ReportsList.module.css'
 
 function ReportsList(props) {
-  const { page, user, API_URL } = props;
+  const { page, user } = props;
   const [tab, setTab] = useState('#defects');
   const [defects, setDefects] = useState(null);
   const [defectsFilter, setDefectsFilter] = useState(['open']);
   const [suggestions, setSuggestions] = useState(null);
 
   useEffect(() => {
-    fetch(`${API_URL}/getdefectreports?username=${user}`)
+    fetch(`/api/getdefectreports?username=${user}`)
       .then(res => {
         if (res.status === 404) {
           return null;
@@ -34,7 +34,7 @@ function ReportsList(props) {
   }, [user, page]);
 
   useEffect(() => {
-    fetch(`${API_URL}/getsuggestionreports?username=${user}`)
+    fetch(`/api/getsuggestionreports?username=${user}`)
       .then(res => {
         if (res.status === 404) {
           return null;
