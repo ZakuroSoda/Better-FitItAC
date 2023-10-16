@@ -4,6 +4,7 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const path = require('path');
+require('dotenv').config();
 
 const { login,
   authenticate,
@@ -20,10 +21,18 @@ const { login,
 
 const app = express();
 const port = 2000;
+const mode = process.env.MODE; console.log(mode == 'PRODUCTION' ? 'Running in production mode' : 'Running in development mode');
 
 newDb();
 
 app.use(cors(), bodyParser.json(), fileUpload());
+
+//Production (won't be used in development mode since React is running on port 3000)
+app.use(express.static(path.join(__dirname, 'build')));
+app.use('/uploads', express.static(path.join(__dirname, 'build/uploads')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'build', 'index.html'));
+});
 
 app.get('/api', (req, res) => {
   res.send('API for FixItAC++');
@@ -120,7 +129,10 @@ app.post('/api/newdefectphoto', (req, res) => {
   const file = req.files?.file;
   const uid = req.body.id;
 
-  const uploadDir = path.join(__dirname, 'public/uploads');
+  const uploadDir = mode == 'PRODUCTION' 
+  ? path.join(__dirname, 'build/uploads')
+  : path.join(__dirname, 'public/uploads');
+
   if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir);
   }

@@ -12,6 +12,12 @@ npm run api (in a separate terminal)
 
 For now, use `admin` username to login.
 
+## Production
+```bash
+echo 'MODE="PRODUCTION"' > .env
+npm run prod
+```
+
 ## Todo
 - [ ] Fix Janky Code
 - [ ] Lots of Vulnerabilities
