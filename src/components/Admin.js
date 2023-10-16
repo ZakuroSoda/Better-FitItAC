@@ -97,18 +97,20 @@ function Admin(props) {
                     defectsFilter.length === 0 &&
                     <Card.Text>Nothing selected</Card.Text>
                   }
-                  {/*Todo: fix this filthy conditional rendering*/}
                   {
-                    //show text "no open defects" if no open defects are found
-                    defectsFilter[0] === 'open' && defects !== null && defects.filter(item => item.resolved_status.toLowerCase() === 'open').length === 0 &&
+                    defectsFilter.length === 1 && defectsFilter[0] === 'open' && //defectfilter is ONLY open
+                    defects !== null && //ensure can .filter and does not say no open defects even when user has none of any
+                    defects.filter(report => report.resolved_status.toLowerCase() === 'open').length === 0 &&
                     <Card.Text>No open defects</Card.Text>
                   }
                   {
-                    //show text "no resolved defects" if no resolved defects are found
-                    defectsFilter.includes('resolved') && !defectsFilter.includes('open') && defects !== null && defects.filter(item => item.resolved_status.toLowerCase() !== 'open').length === 0 &&
+                    defectsFilter.length === 1 && defectsFilter[0] === 'resolved' && //defectfilter is ONLY resolved
+                    defects !== null && //ensure can .filter and does not say no resolved defects even when user has none of any
+                    defects.filter(report => report.resolved_status.toLowerCase() !== 'open').length === 0 &&
                     <Card.Text>No resolved defects</Card.Text>
                   }
                   {defects === null ? (
+                    defectsFilter.length !== 0 && //ensure that on a clean slate, it does not say BOTH no defects and nothing selected
                     <Card.Text>No defects reported</Card.Text>
                   ) : (
                     defects.map(report => (
