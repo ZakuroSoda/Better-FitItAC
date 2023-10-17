@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import './Login.css';
 
 function Login(props) {
-  const { page, setPage, setUser, setErrorMessage } = props;
+  const { page, setPage, setUser } = props;
   const [schoolID, setSchoolID] = useState("");
 
   const handleSubmit = (event) => {
@@ -11,7 +13,7 @@ function Login(props) {
     fetch(`/api/newtoken?username=${schoolID}`)
       .then(res => {
         if (res.status === 401) {
-          setErrorMessage("Invalid School ID");
+          toast.error('Invalid School ID', { position: "bottom-right" });
           return null;
         }
         return res.text();
@@ -19,7 +21,7 @@ function Login(props) {
       .then(token => {
         if (!token) return;
 
-        setErrorMessage("");
+        toast.dismiss();
         document.cookie = `token=${token}`;
         setUser(schoolID);
         setPage('menu');
@@ -30,6 +32,7 @@ function Login(props) {
   if (page === 'login') {
     return (
       <>
+        <ToastContainer />
         <form onSubmit={handleSubmit}>
           <div className="mb-3">
             <div className="input-group">

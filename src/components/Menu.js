@@ -1,4 +1,5 @@
 import React from 'react';
+import './Menu.css'
 
 function Menu(props) {
   const { page, setPage, setUser } = props;
@@ -19,20 +20,20 @@ function Menu(props) {
               <button
                 className="btn btn-primary m-2"
                 onClick={() => setPage('defect')}>
-                🛠 Report New Defect
+                Report Defect
               </button>
               <button
                 className="btn btn-info m-2"
                 onClick={() => setPage('suggestion')}>
-                ✋ Submit Suggestion
+                Submit Suggestion
               </button>
             </>
           ) : null}
 
           <button
-            className="btn btn-danger m-2"
+            className="btn btn-outline-danger m-2"
             onClick={() => handleLogout()}>
-            🔒 Logout
+            Logout
           </button>
           
         </div>

@@ -9,6 +9,9 @@ import Menu from './components/Menu';
 import ReportsList from './components/ReportsList';
 import Admin from './components/Admin';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import './App.css';
 
 function getCookie(name) {
@@ -18,10 +21,7 @@ function getCookie(name) {
 }
 
 function App() {
-  // const API_URL = process.env.REACT_APP_API_URL;
-
   const [user, setUser] = useState(null);
-  const [errorMessage, setErrorMessage] = useState('');
   const [page, setPage] = useState('login');
 
   useEffect(() => {
@@ -30,7 +30,7 @@ function App() {
       fetch(`/api/getusername?token=${token}`)
         .then(res => {
           if (res.status === 401) {
-            setErrorMessage('Session token error');
+            toast.error('Session token error', { position: "bottom-right" });
             return null;
           }
           return res.text();
@@ -51,10 +51,10 @@ function App() {
 
   return (
     <div className='App'>
+      <ToastContainer />
       <div className="container d-flex flex-column justify-content-center align-items-center p-2 pt-5">
         <Logo />
-        <Error errorMessage={errorMessage} />
-        <Login page={page} setPage={setPage} setUser={setUser} setErrorMessage={setErrorMessage} />
+        <Login page={page} setPage={setPage} setUser={setUser} />
         <Menu page={page} setPage={setPage} setUser={setUser} />
         <ReportsList page={page} user={user} />
         <DefectForm user={user} page={page} setPage={setPage} />
