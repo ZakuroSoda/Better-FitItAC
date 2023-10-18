@@ -54,6 +54,14 @@ function Admin(props) {
       })
   }
 
+  const handleHideDefect = (uid) => {
+    fetch(`/api/hidedefectreport?uid=${uid}`)
+      .then(res => {
+        toast.success(`Defect has been hidden!`, { position: "bottom-right" });
+        setDefects(defects.filter(defect => defect.uid !== uid));
+      })
+  }
+
   if (page === 'admin') {
     return (
       <div className="container my-4 mx-5">
@@ -132,6 +140,12 @@ function Admin(props) {
                           variant="primary"
                           className='mx-1'
                           onClick={() => handleResolveDefect(report.uid)}>✔ Resolve</Button>
+                        )}
+                        {report.resolved_status.toLowerCase() === 'open' ? null : (
+                        <Button
+                          variant="outline-danger"
+                          className='mx-1'
+                          onClick={() => handleHideDefect(report.uid)}>✖ Hide Permanently</Button>
                         )}
                         <hr />
                       </div>
