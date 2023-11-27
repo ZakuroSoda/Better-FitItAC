@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import Logo from './components/Logo';
 import Login from './components/Login';
-import Error from './components/Error';
 import DefectForm from './components/DefectForm';
 import SuggestionForm from './components/SuggestionForm';
 import Menu from './components/Menu';
