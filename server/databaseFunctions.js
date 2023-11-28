@@ -1,6 +1,7 @@
 const sqlite3 = require('sqlite3');
 const { open } = require('sqlite');
 const { v4: uuidv4 } = require('uuid');
+const sha256 = require('js-sha256');
 
 async function openDb(file) {
   return open({
@@ -19,12 +20,12 @@ async function newDb() {
     admin INTEGER DEFAULT 0 NOT NULL,
     token TEXT
   )`);
-  await db.run(`INSERT INTO users (schoolID, password_hash, admin)) 
-    SELECT ('testaccount', 'dfe2b81efc39922409696e9c8ded27f7551cb36417556cae0c7c7c4f661747fe', 0)
+  await db.run(`INSERT INTO users (schoolID, password_hash, admin) 
+    SELECT 'testaccount', 'dfe2b81efc39922409696e9c8ded27f7551cb36417556cae0c7c7c4f661747fe', 0
     WHERE NOT EXISTS (SELECT 1 FROM users WHERE schoolID = 'testaccount')
   `);
   await db.run(`INSERT INTO users (schoolID, password_hash, admin)
-    SELECT ('admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 1)
+    SELECT 'admin', '8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918', 1
     WHERE NOT EXISTS (SELECT 1 FROM users WHERE schoolID = 'admin')
   `);
 
@@ -52,11 +53,12 @@ async function newDb() {
   console.log('Database created');
 }
 
-async function login(schoolID) {
+async function login(schoolID, password) {
   const db = await openDb('./server/database.db');
-  const user = await db.get('SELECT * FROM users WHERE schoolID = ?', schoolID);
+  const password_hash = sha256(password);
+  const user = await db.get('SELECT * FROM users WHERE schoolID = ? AND password_hash = ?', schoolID, password_hash);
   if (user) {
-    token = uuidv4().replace(/[\r\n]+/g, '');
+    const token = uuidv4().replace(/[\r\n]+/g, '');
     await db.run('UPDATE users SET token = ? WHERE schoolID = ?', token, schoolID);
     return token;
   }

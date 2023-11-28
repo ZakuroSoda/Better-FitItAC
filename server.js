@@ -48,19 +48,18 @@ app.get('/api/getusername', (req, res) => {
       res.sendStatus(401);
     }
   });
-
 });
 
 app.get('/api/newtoken', (req, res) => {
   const username = req.query.username;
-  login(username).then((token) => {
+  const password = req.query.password;
+  login(username, password).then((token) => {
     if (token) {
       res.send(token);
     } else {
-      res.sendStatus(401);
+      res.status(401).send('Invalid School ID');
     }
   });
-
 });
 
 app.get('/api/getdefectreports', (req, res) => {
