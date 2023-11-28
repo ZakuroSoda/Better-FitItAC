@@ -30,6 +30,7 @@ function App() {
         .then(res => {
           if (res.status === 401) {
             res.text().then(errorMessage => {
+              toast.dismiss();
               toast.error(errorMessage, { position: "bottom-right" });
             });
             return null;
@@ -52,6 +53,7 @@ function App() {
         })
         .catch(err => {
           console.error(err);
+          toast.dismiss();
           toast.error('Internal server error', { position: "bottom-right" });
         });
     }

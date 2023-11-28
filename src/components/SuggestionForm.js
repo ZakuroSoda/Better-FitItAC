@@ -23,6 +23,7 @@ function SuggestionForm(props) {
     event.preventDefault();
 
     if (suggestionReport.title === '' || suggestionReport.description === '') {
+      toast.dismiss();
       toast.error('Please fill in all fields', { position: "bottom-right" });
       return;
     };
@@ -40,10 +41,12 @@ function SuggestionForm(props) {
           'title': '',
           'description': ''
         });
+        toast.dismiss();
         toast.success('Suggestion submitted successfully!', { position: "bottom-right" });
       })
       .catch(err => {
         console.error(err);
+        toast.dismiss();
         toast.error('Internal server error', { position: "bottom-right" });
       });
   }

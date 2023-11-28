@@ -1,5 +1,7 @@
 import React from 'react';
 import './Menu.css'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Menu(props) {
   const { page, setPage, setUser } = props;
@@ -8,10 +10,15 @@ function Menu(props) {
     setPage('login');
     setUser(null);
     document.cookie = 'token=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    
+    toast.dismiss();
+    toast.success('Successfully logged out!', { position: "bottom-right" });
   };
 
   return (
     <>
+      <ToastContainer />
+
       {(page === 'menu' || page ==='admin') ? (
         <div className="d-flex justify-content-center align-items-center p-2 m-2">
           

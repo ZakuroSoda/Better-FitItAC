@@ -20,19 +20,24 @@ function Admin(props) {
         return res.json();
       })
       .then(data => {
-        data.sort((a, b) => {
-          if (a.resolved_status.toLowerCase() === 'open' && b.resolved_status.toLowerCase() !== 'open') {
-            return -1;
-          } else if (a.resolved_status.toLowerCase() !== 'open' && b.resolved_status.toLowerCase() === 'open') {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
+        try {
+          data.sort((a, b) => {
+            if (a.resolved_status.toLowerCase() === 'open' && b.resolved_status.toLowerCase() !== 'open') {
+              return -1;
+            } else if (a.resolved_status.toLowerCase() !== 'open' && b.resolved_status.toLowerCase() === 'open') {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+        } catch (_err) {
+          // avoid error when data is null
+        }
         setDefects(data);
       })
       .catch(err => {
         console.error(err);
+        toast.dismiss();
         toast.error('Internal server error', { position: "bottom-right" });
       });
   }, [user, page, defects]);
@@ -48,6 +53,7 @@ function Admin(props) {
       .then(data => setSuggestions(data))
       .catch(err => {
         console.error(err);
+        toast.dismiss();
         toast.error('Internal server error', { position: "bottom-right" });
       });
   }, [user, page, suggestions]);
@@ -55,11 +61,13 @@ function Admin(props) {
   const handleResolveDefect = (uid) => {
     fetch(`/api/resolvedefectreport?uid=${uid}`)
       .then(res => {
+        toast.dismiss();
         toast.success(`Defect has been resolved!`, { position: "bottom-right" });
         setDefects(defects.filter(defect => defect.uid !== uid));
       })
       .catch(err => {
         console.error(err);
+        toast.dismiss();
         toast.error('Internal server error', { position: "bottom-right" });
       });
   }
@@ -67,11 +75,13 @@ function Admin(props) {
   const handleHideDefect = (uid) => {
     fetch(`/api/hidedefectreport?uid=${uid}`)
       .then(res => {
+        toast.dismiss();
         toast.success(`Defect has been hidden!`, { position: "bottom-right" });
         setDefects(defects.filter(defect => defect.uid !== uid));
       })
       .catch(err => {
         console.error(err);
+        toast.dismiss();
         toast.error('Internal server error', { position: "bottom-right" });
       });
   }

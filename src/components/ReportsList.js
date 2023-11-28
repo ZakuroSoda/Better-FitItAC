@@ -13,6 +13,7 @@ function ReportsList(props) {
   const [suggestions, setSuggestions] = useState(null);
 
   useEffect(() => {
+    if (!user) return;
     fetch(`/api/getdefectreports?username=${user}`)
       .then(res => {
         if (res.status === 404) {
@@ -22,24 +23,30 @@ function ReportsList(props) {
       })
       .then(data => {
         //sort the defects to put the open ones first (copilot wrote this)
-        data.sort((a, b) => {
-          if (a.resolved_status.toLowerCase() === 'open' && b.resolved_status.toLowerCase() !== 'open') {
-            return -1;
-          } else if (a.resolved_status.toLowerCase() !== 'open' && b.resolved_status.toLowerCase() === 'open') {
-            return 1;
-          } else {
-            return 0;
-          }
-        });
+        try {
+          data.sort((a, b) => {
+            if (a.resolved_status.toLowerCase() === 'open' && b.resolved_status.toLowerCase() !== 'open') {
+              return -1;
+            } else if (a.resolved_status.toLowerCase() !== 'open' && b.resolved_status.toLowerCase() === 'open') {
+              return 1;
+            } else {
+              return 0;
+            }
+          });
+        } catch (_err) {
+          // avoid error when data is null
+        }
         setDefects(data);
       })
       .catch(err => {
         console.error(err);
+        toast.dismiss();
         toast.error('Internal server error', { position: "bottom-right" });
       });
   }, [user, page]);
 
   useEffect(() => {
+    if (!user) return;
     fetch(`/api/getsuggestionreports?username=${user}`)
       .then(res => {
         if (res.status === 404) {
@@ -50,6 +57,7 @@ function ReportsList(props) {
       .then(data => setSuggestions(data))
       .catch(err => {
         console.error(err);
+        toast.dismiss();
         toast.error('Internal server error', { position: "bottom-right" });
       });
   }, [user, page]);

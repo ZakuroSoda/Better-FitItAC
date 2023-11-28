@@ -26,6 +26,7 @@ function DefectForm(props) {
     event.preventDefault();
 
     if (defectReport.title === '' || defectReport.location === '' || defectReport.description === '') {
+      toast.dismiss();
       toast.error('Please fill in all fields', { position: "bottom-right" });
       return;
     };
@@ -51,6 +52,7 @@ function DefectForm(props) {
         })
           .catch(err => {
             console.error(err);
+            toast.dismiss();
             toast.error('Internal server error', { position: "bottom-right" });
           });
       })
@@ -63,10 +65,12 @@ function DefectForm(props) {
           'description': ''
         });
         setSelectedFile(null);
+        toast.dismiss();
         toast.success('Defect report submitted successfully!', { position: "bottom-right" });
       })
       .catch(err => {
         console.error(err);
+        toast.dismiss();
         toast.error('Internal server error', { position: "bottom-right" });
       });
   }

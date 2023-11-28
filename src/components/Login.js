@@ -21,6 +21,7 @@ function Login(props) {
       .then(res => {
         if (res.status === 401) {
           res.text().then(errorMessage => {
+            toast.dismiss();
             toast.error(errorMessage, { position: "bottom-right" });
           });
           return null;
@@ -39,6 +40,7 @@ function Login(props) {
       })
       .catch(err => {
         console.error(err);
+        toast.dismiss();
         toast.error('Internal server error', { position: "bottom-right" });
       });
 
