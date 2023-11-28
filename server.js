@@ -127,7 +127,7 @@ app.post('/api/newdefectreport', (req, res) => {
   }
   newdefectreport(updatedDefectReport)
     .then((uid) => {
-      res.send(uid);
+      res.status(200).send(uid);
     });
 
 });
@@ -162,7 +162,7 @@ app.post('/api/newsuggestionreport', (req, res) => {
   const suggestionReport = req.body;
   newsuggestionreport(suggestionReport)
     .then((uid) => {
-      res.send(uid);
+      res.status(200).send(uid);
     });
 });
 

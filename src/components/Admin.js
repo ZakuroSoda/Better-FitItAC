@@ -20,19 +20,19 @@ function Admin(props) {
         return res.json();
       })
       .then(data => {
-        try {
-          data.sort((a, b) => {
-            if (a.resolved_status.toLowerCase() === 'open' && b.resolved_status.toLowerCase() !== 'open') {
-              return -1;
-            } else if (a.resolved_status.toLowerCase() !== 'open' && b.resolved_status.toLowerCase() === 'open') {
-              return 1;
-            } else {
-              return 0;
-            }
-          });
-        } catch (_err) {
-          // avoid error when data is null
-        }
+        if (!data) return;
+
+        //sort the defects to put the open ones first (copilot wrote this)
+        data.sort((a, b) => {
+          if (a.resolved_status.toLowerCase() === 'open' && b.resolved_status.toLowerCase() !== 'open') {
+            return -1;
+          } else if (a.resolved_status.toLowerCase() !== 'open' && b.resolved_status.toLowerCase() === 'open') {
+            return 1;
+          } else {
+            return 0;
+          }
+        });
+        
         setDefects(data);
       })
       .catch(err => {
