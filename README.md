@@ -44,7 +44,10 @@ pm2 start server.js --name better-fixitac
 ```
 
 ## Todo
-- [ ] Fix Janky Code
 - [ ] Lots of Vulnerabilities
-- [ ] Error Handling for API Calls and DB Calls
-- [ ] Fix Authentication System in General
+
+- [ ] Error message from API, not within front-end (server.js)
+- [ ] Error handling for API call within front-end
+- [ ] Switch to POST instead of GET API eventually
+- [ ] Consistent casing, variable naming within database, api, front-end
+- [ ] Register/Change PW Functionality
