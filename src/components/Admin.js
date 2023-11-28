@@ -31,7 +31,10 @@ function Admin(props) {
         });
         setDefects(data);
       })
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.error(err);
+        toast.error('Internal server error', { position: "bottom-right" });
+      });
   }, [user, page, defects]);
 
   useEffect(() => {
@@ -43,7 +46,10 @@ function Admin(props) {
         return res.json();
       })
       .then(data => setSuggestions(data))
-      .catch(err => console.log(err));
+      .catch(err => {
+        console.error(err);
+        toast.error('Internal server error', { position: "bottom-right" });
+      });
   }, [user, page, suggestions]);
 
   const handleResolveDefect = (uid) => {
@@ -52,6 +58,10 @@ function Admin(props) {
         toast.success(`Defect has been resolved!`, { position: "bottom-right" });
         setDefects(defects.filter(defect => defect.uid !== uid));
       })
+      .catch(err => {
+        console.error(err);
+        toast.error('Internal server error', { position: "bottom-right" });
+      });
   }
 
   const handleHideDefect = (uid) => {
@@ -60,6 +70,10 @@ function Admin(props) {
         toast.success(`Defect has been hidden!`, { position: "bottom-right" });
         setDefects(defects.filter(defect => defect.uid !== uid));
       })
+      .catch(err => {
+        console.error(err);
+        toast.error('Internal server error', { position: "bottom-right" });
+      });
   }
 
   if (page === 'admin') {

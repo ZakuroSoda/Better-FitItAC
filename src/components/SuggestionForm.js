@@ -42,6 +42,10 @@ function SuggestionForm(props) {
         });
         toast.success('Suggestion submitted successfully!', { position: "bottom-right" });
       })
+      .catch(err => {
+        console.error(err);
+        toast.error('Internal server error', { position: "bottom-right" });
+      });
   }
   if (page === 'suggestion') {
     return (

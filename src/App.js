@@ -49,6 +49,10 @@ function App() {
           } else {
             setPage('menu');
           }
+        })
+        .catch(err => {
+          console.error(err);
+          toast.error('Internal server error', { position: "bottom-right" });
         });
     }
   }, [user]);

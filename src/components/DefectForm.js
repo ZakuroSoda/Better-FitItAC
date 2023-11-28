@@ -48,7 +48,11 @@ function DefectForm(props) {
         fetch(`/api/newdefectphoto`, {
           method: 'POST',
           body: formData
-        });
+        })
+          .catch(err => {
+            console.error(err);
+            toast.error('Internal server error', { position: "bottom-right" });
+          });
       })
       .then(() => {
         setDefectReport({
@@ -61,6 +65,10 @@ function DefectForm(props) {
         setSelectedFile(null);
         toast.success('Defect report submitted successfully!', { position: "bottom-right" });
       })
+      .catch(err => {
+        console.error(err);
+        toast.error('Internal server error', { position: "bottom-right" });
+      });
   }
 
   if (page === 'defect') {
