@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './Login.css';
@@ -7,6 +7,12 @@ function Login(props) {
   const { page, setPage, setUser } = props;
   const [credentials, setCredentials] = useState({ schoolID: "", password: "" });
   const [loginStage, setLoginStage] = useState("schoolID");
+
+  useEffect(() => {
+    if (loginStage === "password") {
+      document.getElementById("password").focus();
+    }
+  }, [loginStage]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -66,7 +72,7 @@ function Login(props) {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        setLoginStage("password")
+                        setLoginStage("password");
                       }}
                       className="btn btn-outline-dark"
                       id="button-next"
@@ -79,7 +85,7 @@ function Login(props) {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        setLoginStage("schoolID")
+                        setLoginStage("schoolID");
                       }}
                       onKeyDown={(e) => {
                         if (e.key === ' Enter') e.preventDefault();
