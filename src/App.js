@@ -29,17 +29,22 @@ function App() {
       fetch(`/api/getusername?token=${token}`)
         .then(res => {
           if (res.status === 401) {
-            toast.error('Session token error', { position: "bottom-right" });
+            res.text().then(errorMessage => {
+              toast.error(errorMessage, { position: "bottom-right" });
+            });
             return null;
           }
           return res.text();
         })
-        .then(username => {
-          if (!username) {
+        .then(UserObj => {
+          if (!UserObj) {
             return;
           }
-          setUser(username);
-          if (user === 'admin') {
+
+          UserObj = JSON.parse(UserObj);
+          setUser(UserObj.schoolID);
+
+          if (UserObj.admin) {
             setPage('admin');
           } else {
             setPage('menu');
@@ -54,10 +59,13 @@ function App() {
       <div className="container d-flex flex-column justify-content-center align-items-center p-2 pt-5">
         <Logo />
         <Login page={page} setPage={setPage} setUser={setUser} />
+
         <Menu page={page} setPage={setPage} setUser={setUser} />
+
         <ReportsList page={page} user={user} />
         <DefectForm user={user} page={page} setPage={setPage} />
         <SuggestionForm user={user} page={page} setPage={setPage} />
+        
         <Admin page={page} user={user} />
       </div>
     </div>

@@ -45,7 +45,7 @@ app.get('/api/getusername', (req, res) => {
     if (user) {
       res.send(user);
     } else {
-      res.sendStatus(401);
+      res.status(401).send('Session token error');
     }
   });
 });

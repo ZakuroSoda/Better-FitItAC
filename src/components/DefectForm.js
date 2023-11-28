@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -13,6 +13,14 @@ function DefectForm(props) {
     'description': ''
   });
   const [selectedFile, setSelectedFile] = useState(null);
+
+  // on initial page load, user will be null, hence update user
+  useEffect(() => {
+    setDefectReport({
+      ...defectReport,
+      'schoolID': user
+    });
+  }, [user]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -54,6 +62,7 @@ function DefectForm(props) {
         toast.success('Defect report submitted successfully!', { position: "bottom-right" });
       })
   }
+
   if (page === 'defect') {
     return (
       <>
@@ -70,7 +79,6 @@ function DefectForm(props) {
               onChange={(e) => {
                 setDefectReport({
                   ...defectReport,
-                  "schoolID": user,
                   title: e.target.value
                 });
               }}

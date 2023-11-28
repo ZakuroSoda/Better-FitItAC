@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -10,6 +10,14 @@ function SuggestionForm(props) {
     'title': '',
     'description': ''
   });
+
+  // on initial page load, user will be null, hence update user
+  useEffect(() => {
+    setSuggestionReport({
+      ...suggestionReport,
+      'schoolID': user
+    });
+  }, [user]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -51,7 +59,6 @@ function SuggestionForm(props) {
               onChange={(e) => {
                 setSuggestionReport({
                   ...suggestionReport,
-                  "schoolID": user,
                   title: e.target.value
                 });
               }}

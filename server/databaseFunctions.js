@@ -67,9 +67,9 @@ async function login(schoolID, password) {
 
 async function authenticate(token) {
   const db = await openDb('./server/database.db');
-  const user = await db.get('SELECT schoolID FROM users WHERE token = ?', token);
+  const user = await db.get('SELECT schoolID, admin FROM users WHERE token = ?', token);
   if (user) {
-    return user.schoolID;
+    return user;
   }
   return null;
 }
