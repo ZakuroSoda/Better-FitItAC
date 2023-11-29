@@ -6,18 +6,19 @@ const fileUpload = require('express-fileupload');
 const path = require('path');
 require('dotenv').config();
 
-const { login,
+const {
+  newDb,
+  login,
   authenticate,
-  newdefectreport,
-  newdefectphoto,
-  newsuggestionreport,
-  getdefectreports,
-  getsuggestionreports,
-  getdefectreportsall,
-  getsuggestionreportsall,
-  resolvedefectreport,
-  hidedefectreport,
-  newDb
+  newDefectReport,
+  newDefectPhoto,
+  newSuggestionReport,
+  getDefectReports,
+  getDefectReportsAll,
+  getSuggestionReports,
+  getSuggestionReportsAll,
+  resolveDefectReport,
+  hideDefectReport
 } = require('./server/databaseFunctions.js');
 
 const app = express();
@@ -57,14 +58,24 @@ app.get('/api/newtoken', (req, res) => {
     if (token) {
       res.send(token);
     } else {
-      res.status(401).send('Invalid School ID');
+      res.status(401).send('Invalid Credentials');
     }
   });
 });
 
 app.get('/api/getdefectreports', (req, res) => {
   const username = req.query.username;
-  getdefectreports(username).then((defectReports) => {
+  getDefectReports(username).then((defectReports) => {
+    if (defectReports.length > 0) {
+      res.send(defectReports);
+    } else {
+      res.sendStatus(404);
+    }
+  });
+});
+
+app.get('/api/getdefectreportsall', (req, res) => {
+  getDefectReportsAll().then((defectReports) => {
     if (defectReports.length > 0) {
       res.send(defectReports);
     } else {
@@ -75,7 +86,7 @@ app.get('/api/getdefectreports', (req, res) => {
 
 app.get('/api/getsuggestionreports', (req, res) => {
   const username = req.query.username;
-  getsuggestionreports(username).then((suggestionReports) => {
+  getSuggestionReports(username).then((suggestionReports) => {
     if (suggestionReports.length > 0) {
       res.send(suggestionReports);
     } else {
@@ -84,18 +95,8 @@ app.get('/api/getsuggestionreports', (req, res) => {
   });
 });
 
-app.get('/api/getdefectreportsall', (req, res) => {
-  getdefectreportsall().then((defectReports) => {
-    if (defectReports.length > 0) {
-      res.send(defectReports);
-    } else {
-      res.sendStatus(404);
-    }
-  });
-});
-
 app.get('/api/getsuggestionreportsall', (req, res) => {
-  getsuggestionreportsall().then((suggestionReports) => {
+  getSuggestionReportsAll().then((suggestionReports) => {
     if (suggestionReports.length > 0) {
       res.send(suggestionReports);
     } else {
@@ -106,14 +107,14 @@ app.get('/api/getsuggestionreportsall', (req, res) => {
 
 app.get('/api/resolvedefectreport', (req, res) => {
   const uid = req.query.uid;
-  resolvedefectreport(uid).then(() => {
+  resolveDefectReport(uid).then(() => {
     res.sendStatus(200);
   });
 });
 
 app.get('/api/hidedefectreport', (req, res) => {
   const uid = req.query.uid;
-  hidedefectreport(uid).then(() => {
+  hideDefectReport(uid).then(() => {
     res.sendStatus(200);
   });
 });
@@ -125,7 +126,7 @@ app.post('/api/newdefectreport', (req, res) => {
     ...defectReport,
     category: categories[defectReport.category - 1],
   }
-  newdefectreport(updatedDefectReport)
+  newDefectReport(updatedDefectReport)
     .then((uid) => {
       res.status(200).send(uid);
     });
@@ -147,7 +148,7 @@ app.post('/api/newdefectphoto', (req, res) => {
   const uniqueFileName = `${uid}${ext}`;
   const filePath = path.join(uploadDir, uniqueFileName);
 
-  newdefectphoto(uid, ext);
+  newDefectPhoto(uid, ext);
 
   file.mv(filePath, (err) => {
     if (err) {
@@ -160,7 +161,7 @@ app.post('/api/newdefectphoto', (req, res) => {
 
 app.post('/api/newsuggestionreport', (req, res) => {
   const suggestionReport = req.body;
-  newsuggestionreport(suggestionReport)
+  newSuggestionReport(suggestionReport)
     .then((uid) => {
       res.status(200).send(uid);
     });
