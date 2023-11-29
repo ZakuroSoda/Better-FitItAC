@@ -9,6 +9,9 @@ function Login(props) {
   const [loginStage, setLoginStage] = useState("schoolID");
 
   useEffect(() => {
+    if (loginStage === "schoolID") {
+      document.getElementById("school-id").focus();
+    }
     if (loginStage === "password") {
       document.getElementById("password").focus();
     }
@@ -44,8 +47,8 @@ function Login(props) {
         toast.error('Internal server error', { position: "bottom-right" });
       });
 
-    // reset form and login stage
-    setCredentials({ schoolID: "", password: "" });
+    // reset form and login stage (don't clear username)
+    setCredentials({ ...credentials, password: "" });
     setLoginStage("schoolID");
   }
 
