@@ -7,20 +7,18 @@ import styles from './ReportsList.module.css'
 function Admin(props) {
   const { page, user } = props;
   const [tab, setTab] = useState('#defects');
-  const [defects, setDefects] = useState(null);
+  const [defects, setDefects] = useState([]);
   const [defectsFilter, setDefectsFilter] = useState(['open']);
-  const [suggestions, setSuggestions] = useState(null);
+  const [suggestions, setSuggestions] = useState([]);
 
   useEffect(() => {
+    if (!user) return;
     fetch(`/api/getdefectreportsall`)
       .then(res => {
-        if (res.status === 404) {
-          return null;
-        }
         return res.json();
       })
       .then(data => {
-        if (!data) return;
+        if (!data) return; // allows for an empty array though
 
         //sort the defects to put the open ones first (copilot wrote this)
         data.sort((a, b) => {
@@ -43,14 +41,15 @@ function Admin(props) {
   }, [user, page, defects]);
 
   useEffect(() => {
+    if (!user) return;
     fetch(`/api/getsuggestionreportsall`)
       .then(res => {
-        if (res.status === 404) {
-          return null;
-        }
         return res.json();
       })
-      .then(data => setSuggestions(data))
+      .then(data => {
+        if (!data) return; // allows for an empty array though
+        setSuggestions(data)
+      })
       .catch(err => {
         console.error(err);
         toast.dismiss();
@@ -145,17 +144,17 @@ function Admin(props) {
                   }
                   {
                     defectsFilter.length === 1 && defectsFilter[0] === 'open' && //defectfilter is ONLY open
-                    defects !== null && //ensure can .filter and does not say no open defects even when user has none of any
+                    defects.length !== 0 && //ensure it does not say no open defects even when user has none of any
                     defects.filter(report => report.resolved_status.toLowerCase() === 'open').length === 0 &&
                     <Card.Text>No open defects</Card.Text>
                   }
                   {
                     defectsFilter.length === 1 && defectsFilter[0] === 'resolved' && //defectfilter is ONLY resolved
-                    defects !== null && //ensure can .filter and does not say no resolved defects even when user has none of any
+                    defects.length !== 0 && //ensure it does not say no resolved defects even when user has none of any
                     defects.filter(report => report.resolved_status.toLowerCase() !== 'open').length === 0 &&
                     <Card.Text>No resolved defects</Card.Text>
                   }
-                  {defects === null ? (
+                  {defects.length === 0 ? (
                     defectsFilter.length !== 0 && //ensure that on a clean slate, it does not say BOTH no defects and nothing selected
                     <Card.Text>No defects reported</Card.Text>
                   ) : (
@@ -198,7 +197,7 @@ function Admin(props) {
                 </Tab.Pane>
 
                 <Tab.Pane eventKey="#suggestions">
-                  {suggestions === null ? (
+                  {suggestions.length === 0 ? (
                     <Card.Text>No suggestions submitted</Card.Text>
                   ) : (
                     suggestions.map(suggestion => (

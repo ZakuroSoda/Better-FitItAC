@@ -67,42 +67,26 @@ app.get('/api/newtoken', (req, res) => {
 app.get('/api/getdefectreports', (req, res) => {
   const username = req.query.username;
   getDefectReports(username).then((defectReports) => {
-    if (defectReports.length > 0) {
-      res.send(defectReports);
-    } else {
-      res.sendStatus(404);
-    }
+    res.send(defectReports);
   });
 });
 
 app.get('/api/getdefectreportsall', (req, res) => {
   getDefectReportsAll().then((defectReports) => {
-    if (defectReports.length > 0) {
-      res.send(defectReports);
-    } else {
-      res.sendStatus(404);
-    }
+    res.send(defectReports);
   });
 });
 
 app.get('/api/getsuggestionreports', (req, res) => {
   const username = req.query.username;
   getSuggestionReports(username).then((suggestionReports) => {
-    if (suggestionReports.length > 0) {
-      res.send(suggestionReports);
-    } else {
-      res.sendStatus(404);
-    }
+    res.send(suggestionReports);
   });
 });
 
 app.get('/api/getsuggestionreportsall', (req, res) => {
   getSuggestionReportsAll().then((suggestionReports) => {
-    if (suggestionReports.length > 0) {
-      res.send(suggestionReports);
-    } else {
-      res.sendStatus(404);
-    }
+    res.send(suggestionReports);
   });
 });
 
