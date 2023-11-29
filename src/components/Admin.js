@@ -204,6 +204,7 @@ function Admin(props) {
                       <div key={suggestion.uid}>
                         <Card.Title>{suggestion.title}</Card.Title>
                         <Card.Text>
+                          From: {suggestion.school_id}<br />
                           Date suggested: {suggestion.date}<br />
                           Content: {suggestion.description}
                         </Card.Text>
