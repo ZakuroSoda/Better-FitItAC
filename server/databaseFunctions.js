@@ -5,7 +5,7 @@ const { newDefectReport, newDefectPhoto } = require('./util/newDefectReport');
 const { newSuggestionReport } = require('./util/newSuggestionReport');
 const { getDefectReports, getDefectReportsAll } = require('./util/getDefectReports');
 const { getSuggestionReports, getSuggestionReportsAll } = require('./util/getSuggestionReports');
-const { resolveDefectReport, hideDefectReport } = require('./util/editDefectReport');
+const { resolveDefectReport, unresolveDefectReport, hideDefectReport } = require('./util/editDefectReport');
 
 module.exports = {
   newDb,
@@ -19,5 +19,6 @@ module.exports = {
   getSuggestionReports,
   getSuggestionReportsAll,
   resolveDefectReport,
+  unresolveDefectReport,
   hideDefectReport
 }

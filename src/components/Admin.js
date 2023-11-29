@@ -72,6 +72,20 @@ function Admin(props) {
       });
   }
 
+  const handleUnresolveDefect = (uid) => {
+    fetch(`/api/unresolvedefectreport?uid=${uid}`)
+      .then(res => {
+        toast.dismiss();
+        toast.success(`Defect has been reopen!`, { position: "bottom-right" });
+        setDefects(defects.filter(defect => defect.uid !== uid));
+      })
+      .catch(err => {
+        console.error(err);
+        toast.dismiss();
+        toast.error('Internal server error', { position: "bottom-right" });
+      });
+  }
+
   const handleHideDefect = (uid) => {
     fetch(`/api/hidedefectreport?uid=${uid}`)
       .then(res => {
@@ -163,13 +177,19 @@ function Admin(props) {
                         <Button
                           variant="primary"
                           className='mx-1'
-                          onClick={() => handleResolveDefect(report.uid)}>✔ Resolve</Button>
+                          onClick={() => handleResolveDefect(report.uid)}>Resolve</Button>
+                        )}
+                        {report.resolved_status.toLowerCase() === 'open' ? null : (
+                        <Button
+                          variant="primary"
+                          className='mx-1'
+                          onClick={() => handleUnresolveDefect(report.uid)}>Reopen</Button>
                         )}
                         {report.resolved_status.toLowerCase() === 'open' ? null : (
                         <Button
                           variant="outline-danger"
                           className='mx-1'
-                          onClick={() => handleHideDefect(report.uid)}>✖ Hide Permanently</Button>
+                          onClick={() => handleHideDefect(report.uid)}>Hide Permanently</Button>
                         )}
                         <hr />
                       </div>

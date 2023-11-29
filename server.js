@@ -18,6 +18,7 @@ const {
   getSuggestionReports,
   getSuggestionReportsAll,
   resolveDefectReport,
+  unresolveDefectReport,
   hideDefectReport
 } = require('./server/databaseFunctions.js');
 
@@ -108,6 +109,13 @@ app.get('/api/getsuggestionreportsall', (req, res) => {
 app.get('/api/resolvedefectreport', (req, res) => {
   const uid = req.query.uid;
   resolveDefectReport(uid).then(() => {
+    res.sendStatus(200);
+  });
+});
+
+app.get('/api/unresolvedefectreport', (req, res) => {
+  const uid = req.query.uid;
+  unresolveDefectReport(uid).then(() => {
     res.sendStatus(200);
   });
 });
