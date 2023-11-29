@@ -4,6 +4,12 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styles from './ReportsList.module.css'
 
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
+}
+
 function Admin(props) {
   const { page, user } = props;
   const [tab, setTab] = useState('#defects');
@@ -13,7 +19,9 @@ function Admin(props) {
 
   useEffect(() => {
     if (!user) return;
-    fetch(`/api/getdefectreportsall`)
+
+    const token = getCookie('token');
+    fetch(`/api/getdefectreportsall?token=${token}`)
       .then(res => {
         return res.json();
       })
@@ -42,7 +50,9 @@ function Admin(props) {
 
   useEffect(() => {
     if (!user) return;
-    fetch(`/api/getsuggestionreportsall`)
+
+    const token = getCookie('token');
+    fetch(`/api/getsuggestionreportsall?token=${token}`)
       .then(res => {
         return res.json();
       })
@@ -58,7 +68,8 @@ function Admin(props) {
   }, [user, page, suggestions]);
 
   const handleResolveDefect = (uid) => {
-    fetch(`/api/resolvedefectreport?uid=${uid}`)
+    const token = getCookie('token');
+    fetch(`/api/resolvedefectreport?uid=${uid}&token=${token}`)
       .then(res => {
         toast.dismiss();
         toast.success(`Defect has been resolved!`, { position: "bottom-right" });
@@ -72,7 +83,8 @@ function Admin(props) {
   }
 
   const handleUnresolveDefect = (uid) => {
-    fetch(`/api/unresolvedefectreport?uid=${uid}`)
+    const token = getCookie('token');
+    fetch(`/api/unresolvedefectreport?uid=${uid}&token=${token}`)
       .then(res => {
         toast.dismiss();
         toast.success(`Defect has been reopen!`, { position: "bottom-right" });
@@ -86,7 +98,8 @@ function Admin(props) {
   }
 
   const handleHideDefect = (uid) => {
-    fetch(`/api/hidedefectreport?uid=${uid}`)
+    const token = getCookie('token');
+    fetch(`/api/hidedefectreport?uid=${uid}&token=${token}`)
       .then(res => {
         toast.dismiss();
         toast.success(`Defect has been hidden!`, { position: "bottom-right" });

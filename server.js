@@ -72,8 +72,19 @@ app.get('/api/getdefectreports', (req, res) => {
 });
 
 app.get('/api/getdefectreportsall', (req, res) => {
-  getDefectReportsAll().then((defectReports) => {
-    res.send(defectReports);
+  const token = req.query.token;
+  authenticate(token).then((user) => {
+    if (!user) {
+      res.status(401).send('Not a user');
+      return;
+    }
+    if (user.admin) {
+      getDefectReportsAll().then((defectReports) => {
+        res.send(defectReports);
+      });
+    } else {
+      res.status(401).send('Not admin');
+    }
   });
 });
 
@@ -85,30 +96,75 @@ app.get('/api/getsuggestionreports', (req, res) => {
 });
 
 app.get('/api/getsuggestionreportsall', (req, res) => {
-  getSuggestionReportsAll().then((suggestionReports) => {
-    res.send(suggestionReports);
+  const token = req.query.token;
+  authenticate(token).then((user) => {
+    if (!user) {
+      res.status(401).send('Not a user');
+      return;
+    }
+    if (user.admin) {
+      getSuggestionReportsAll().then((suggestionReports) => {
+        res.send(suggestionReports);
+      });
+    } else {
+      res.status(401).send('Not admin');
+    }
   });
 });
 
 app.get('/api/resolvedefectreport', (req, res) => {
   const uid = req.query.uid;
-  resolveDefectReport(uid).then(() => {
-    res.sendStatus(200);
+  const token = req.query.token;
+  authenticate(token).then((user) => {
+    if (!user) {
+      res.status(401).send('Not a user');
+      return;
+    }
+    if (user.admin) {
+      resolveDefectReport(uid).then(() => {
+        res.sendStatus(200);
+      });
+    } else {
+      res.status(401).send('Not admin');
+    }
   });
 });
 
 app.get('/api/unresolvedefectreport', (req, res) => {
   const uid = req.query.uid;
-  unresolveDefectReport(uid).then(() => {
-    res.sendStatus(200);
+  const token = req.query.token;
+  authenticate(token).then((user) => {
+    if (!user) {
+      res.status(401).send('Not a user');
+      return;
+    }
+    if (user.admin) {
+      unresolveDefectReport(uid).then(() => {
+        res.sendStatus(200);
+      });
+    } else {
+      res.status(401).send('Not admin');
+    }
   });
 });
 
 app.get('/api/hidedefectreport', (req, res) => {
   const uid = req.query.uid;
-  hideDefectReport(uid).then(() => {
-    res.sendStatus(200);
+  const token = req.query.token;
+  authenticate(token).then((user) => {
+    if (!user) {
+      res.status(401).send('Not a user');
+      return;
+    }
+    if (user.admin) {
+      hideDefectReport(uid).then(() => {
+        res.sendStatus(200);
+      });
+    } else {
+      res.status(401).send('Not admin');
+    }
   });
+
 });
 
 app.post('/api/newdefectreport', (req, res) => {
