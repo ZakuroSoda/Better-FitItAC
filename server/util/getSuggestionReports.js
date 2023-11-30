@@ -1,5 +1,11 @@
 const { openDb } = require('./openDb');
 
+/**
+ * Gets all suggestions by user's school ID
+ * @param {string} schoolId 
+ * @returns {object} - { uid: string, date: date, title: string, description: string }[]
+ */
+
 async function getSuggestionReports(schoolId) {
   const db = await openDb('./server/database.db');
   let reports = await db.all('SELECT uid, date, title, description FROM suggestion_reports WHERE school_id = ?', schoolId);
@@ -8,6 +14,11 @@ async function getSuggestionReports(schoolId) {
   }
   return reports;
 }
+
+/**
+ * Gets all suggestions for the admins
+ * @returns  {object} - { uid: string, date: date, school_id: string, title: string, description: string }[]
+ */
 
 async function getSuggestionReportsAll() {
   const db = await openDb('./server/database.db');

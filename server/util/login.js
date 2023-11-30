@@ -2,6 +2,13 @@ const { openDb } = require('./openDb');
 const { v4: uuidv4 } = require('uuid');
 const sha256 = require('js-sha256');
 
+/**
+ * Logs user in by school ID and password
+ * @param {string} schoolId - User's school ID
+ * @param {string} password - User's password
+ * @returns {string} - Session token
+ */
+
 async function login(schoolId, password) {
   const db = await openDb('./server/database.db');
   const password_hash = sha256(password);

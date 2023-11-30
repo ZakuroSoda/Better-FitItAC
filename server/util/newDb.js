@@ -1,5 +1,10 @@
 const { openDb } = require('./openDb');
 
+/**
+ * Creates new database with tables and starter values
+ * @returns
+ */
+
 async function newDb() {
   const db = await openDb('./server/database.db');
 
