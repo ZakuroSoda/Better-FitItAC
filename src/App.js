@@ -43,7 +43,7 @@ function App() {
           }
 
           UserObj = JSON.parse(UserObj);
-          setUser(UserObj.schoolID);
+          setUser(UserObj.school_id);
 
           if (UserObj.admin) {
             setPage('admin');

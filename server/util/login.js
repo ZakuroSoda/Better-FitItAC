@@ -5,10 +5,10 @@ const sha256 = require('js-sha256');
 async function login(schoolID, password) {
   const db = await openDb('./server/database.db');
   const password_hash = sha256(password);
-  const user = await db.get('SELECT * FROM users WHERE schoolID = ? AND password_hash = ?', schoolID, password_hash);
+  const user = await db.get('SELECT * FROM users WHERE school_id = ? AND password_hash = ?', schoolID, password_hash);
   if (user) {
     const token = uuidv4().replace(/[\r\n]+/g, '');
-    await db.run('UPDATE users SET token = ? WHERE schoolID = ?', token, schoolID);
+    await db.run('UPDATE users SET token = ? WHERE school_id = ?', token, schoolID);
     return token;
   }
   return null;

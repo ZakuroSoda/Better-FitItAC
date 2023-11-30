@@ -13,6 +13,8 @@ function ReportsList(props) {
 
   useEffect(() => {
     if (!user) return;
+    if (page !== 'menu') return;
+
     fetch(`/api/getdefectreports?username=${user}`)
       .then(res => {
         return res.json();
@@ -42,6 +44,8 @@ function ReportsList(props) {
 
   useEffect(() => {
     if (!user) return;
+    if (page !== 'menu') return;
+
     fetch(`/api/getsuggestionreports?username=${user}`)
       .then(res => {  
         return res.json();

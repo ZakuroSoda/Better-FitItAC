@@ -49,4 +49,5 @@ pm2 start server.js --name better-fixitac
 - [X] Error handling for API call within front-end
 - [ ] Switch to POST instead of GET API eventually
 - [ ] Consistent casing, variable naming within database, api, front-end
+  - [ ] Javascript - camelCase, DB - snake_case
 - [ ] Register/Change PW Functionality

@@ -19,10 +19,12 @@ function Admin(props) {
 
   useEffect(() => {
     if (!user) return;
+    if (page !== 'admin') return;
 
     const token = getCookie('token');
     fetch(`/api/getdefectreportsall?token=${token}`)
       .then(res => {
+        if (res.status === 401) return;
         return res.json();
       })
       .then(data => {
@@ -50,10 +52,12 @@ function Admin(props) {
 
   useEffect(() => {
     if (!user) return;
+    if (page !== 'admin') return;
 
     const token = getCookie('token');
     fetch(`/api/getsuggestionreportsall?token=${token}`)
       .then(res => {
+        if (res.status === 401) return;
         return res.json();
       })
       .then(data => {
