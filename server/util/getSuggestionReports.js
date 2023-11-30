@@ -1,7 +1,5 @@
 const { openDb } = require('./openDb');
 
-// id, uid, date, school_id, title, description
-
 async function getSuggestionReports(schoolId) {
   const db = await openDb('./server/database.db');
   let reports = await db.all('SELECT uid, date, title, description FROM suggestion_reports WHERE school_id = ?', schoolId);
