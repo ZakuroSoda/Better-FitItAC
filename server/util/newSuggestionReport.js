@@ -10,7 +10,7 @@ async function newSuggestionReport(suggestionReport) {
       VALUES (?, ?, ?, ?, ?)`,
     uid,
     Date.now(),
-    suggestionReport.schoolID,
+    suggestionReport.schoolId,
     suggestionReport.title,
     suggestionReport.description
   );

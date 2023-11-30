@@ -10,7 +10,7 @@ async function newDefectReport(defectReport) {
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     uid,
     Date.now(),
-    defectReport.schoolID,
+    defectReport.schoolId,
     0,
     0,
     defectReport.title,

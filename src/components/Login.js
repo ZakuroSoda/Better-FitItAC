@@ -5,11 +5,11 @@ import './Login.css';
 
 function Login(props) {
   const { page, setPage, setUser } = props;
-  const [credentials, setCredentials] = useState({ schoolID: "", password: "" });
-  const [loginStage, setLoginStage] = useState("schoolID");
+  const [credentials, setCredentials] = useState({ schoolId: "", password: "" });
+  const [loginStage, setLoginStage] = useState("schoolId");
 
   useEffect(() => {
-    if (loginStage === "schoolID") {
+    if (loginStage === "schoolId") {
       document.getElementById("school-id").focus();
     }
     if (loginStage === "password") {
@@ -20,7 +20,7 @@ function Login(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    fetch(`/api/newtoken?username=${credentials.schoolID}&password=${credentials.password}`)
+    fetch(`/api/newtoken?username=${credentials.schoolId}&password=${credentials.password}`)
       .then(res => {
         if (res.status === 401) {
           res.text().then(errorMessage => {
@@ -38,7 +38,7 @@ function Login(props) {
         toast.success('Successfully logged in!', { position: "bottom-right" });
 
         document.cookie = `token=${token}`;
-        setUser(credentials.schoolID);
+        setUser(credentials.schoolId);
         setPage('menu');
       })
       .catch(err => {
@@ -49,7 +49,7 @@ function Login(props) {
 
     // reset form and login stage (don't clear username)
     setCredentials({ ...credentials, password: "" });
-    setLoginStage("schoolID");
+    setLoginStage("schoolId");
   }
 
   if (page === 'login') {
@@ -60,7 +60,7 @@ function Login(props) {
           <div className="mb-3">
             <div className="input-group">
               {
-                loginStage === "schoolID" ?
+                loginStage === "schoolId" ?
                   <>
                     <input
                       placeholder="School ID"
@@ -68,10 +68,10 @@ function Login(props) {
                       className="form-control"
                       id="school-id"
                       aria-describedby="button-login"
-                      value={credentials.schoolID}
+                      value={credentials.schoolId}
                       onChange={(e) => setCredentials({
                         ...credentials,
-                        schoolID: e.target.value
+                        schoolId: e.target.value
                       })}
                     />
                     <button
@@ -90,7 +90,7 @@ function Login(props) {
                     <button
                       onClick={(e) => {
                         e.preventDefault();
-                        setLoginStage("schoolID");
+                        setLoginStage("schoolId");
                       }}
                       onKeyDown={(e) => {
                         if (e.key === ' Enter') e.preventDefault();
@@ -125,7 +125,7 @@ function Login(props) {
                   </>
               }
             </div>
-            { loginStage === "schoolID" ?
+            { loginStage === "schoolId" ?
               <div id="school-id-help" className="form-text">E.g. 21john.tan</div> :
               <div id="password-help" className="form-text">E.g. Password123</div>
             }
